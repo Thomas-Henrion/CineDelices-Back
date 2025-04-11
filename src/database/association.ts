@@ -1,10 +1,10 @@
-import Ingredient from "./models/ingredient.mjs";
-import Media from "./models/media.mjs";
-import Recipe from "./models/recipe.mjs";
-import RecipeCategory from "./models/recipeCategory.mjs";
-import RecipeComposition from "./models/recipeComposition.mjs";
-import RecipeStep from "./models/recipeStep.mjs";
-import User from "./models/user.mjs";
+import Ingredient from "./models/ingredient";
+import Media from "./models/media";
+import Recipe from "./models/recipe";
+import RecipeCategory from "./models/recipeCategory";
+import RecipeComposition from "./models/recipeComposition";
+import RecipeStep from "./models/recipeStep";
+import User from "./models/user";
 
 // A Recipe belongs to a User (author) and a User can have many Recipes
 Recipe.belongsTo(User, {

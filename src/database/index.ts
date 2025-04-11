@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import config from "../utils/dotenv.mjs";
+import config from "../utils/dotenv";
 
 /**
  * Initializes a Sequelize instance for connecting to a MariaDB database.
@@ -7,7 +7,7 @@ import config from "../utils/dotenv.mjs";
 const sequelize = new Sequelize({
 	dialect: "mariadb",
 	host: config.DATABASE.HOST,
-	port: config.DATABASE.PORT,
+	port: Number.parseInt(config.DATABASE.PORT || "3306", 10),
 	username: config.DATABASE.USER,
 	password: config.DATABASE.PASS,
 	database: config.DATABASE.NAME,

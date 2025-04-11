@@ -1,41 +1,41 @@
-import { Model } from "sequelize";
-import sequelize from "../index.mjs";
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../index";
 
 class Recipe extends Model {}
 
 Recipe.init(
 	{
 		id: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			primaryKey: true,
 		},
 		name: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		coverImg: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: true,
 		},
 		description: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		authorId: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		mediaId: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		categoryId: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 		actif: {
-			type: sequelize.Sequelize.BOOLEAN,
+			type: DataTypes.BOOLEAN,
 			allowNull: false,
 			defaultValue: true,
 		},

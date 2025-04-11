@@ -1,8 +1,8 @@
-import config from "./utils/dotenv.mjs";
+import config from "./utils/dotenv";
 import express from "express";
-import routes from "./routes/indexRoutes.mjs";
-import sequelize from "./database/index.mjs";
-import "./database/association.mjs"
+import routes from "./routes/indexRoutes";
+import sequelize from "./database/index";
+import "./database/association";
 
 sequelize
 	.authenticate()
@@ -20,7 +20,8 @@ app.set("view engine", "ejs");
 app.set("views", "app/views");
 app.use(express.static("public"));
 
-// app.use(router);
+// Utiliser les routes pour l'api
+app.use("/", routes);
 
 app.listen(config.PORT, () => {
 	console.log(`Server is running on http://localhost:${config.PORT}`);

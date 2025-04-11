@@ -1,25 +1,25 @@
-import { Model } from "sequelize";
-import sequelize from "../index.mjs";
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../index";
 
 class Media extends Model {}
 
 Media.init(
 	{
 		id: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			primaryKey: true,
 		},
 		title: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		coverImage: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		anecdote: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 	},

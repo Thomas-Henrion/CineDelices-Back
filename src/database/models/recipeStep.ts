@@ -1,21 +1,21 @@
-import { Model } from "sequelize";
-import sequelize from "../index.mjs";
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../index";
 
 class RecipeStep extends Model {}
 
 RecipeStep.init(
 	{
 		id: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			autoIncrement: true,
 			primaryKey: true,
 		},
 		description: {
-			type: sequelize.Sequelize.STRING,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 		recipeId: {
-			type: sequelize.Sequelize.INTEGER,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
 	},
