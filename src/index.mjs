@@ -1,7 +1,18 @@
 import config from "./utils/dotenv.mjs";
 import express from "express";
+import routes from "./routes/indexRoutes.mjs";
+import sequelize from "./database/index.mjs";
+import "./database/association.mjs"
 
-import "./database/index.mjs";
+sequelize
+	.authenticate()
+	.then(() => {
+		console.log("Database connection has been established successfully.");
+		sequelize.sync({ force: true });
+	})
+	.catch((error) => {
+		console.error("Unable to connect to the database:", error);
+	});
 
 const app = express();
 

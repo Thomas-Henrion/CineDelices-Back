@@ -1,0 +1,23 @@
+import { Model } from "sequelize";
+import sequelize from "../index.mjs";
+
+class Ingredient extends Model {}
+
+Ingredient.init(
+	{
+		id: {
+			type: sequelize.Sequelize.INTEGER,
+			autoIncrement: true,
+			primaryKey: true,
+		},
+		name: {
+			type: sequelize.Sequelize.STRING,
+			allowNull: false,
+		}
+	},
+	{
+		sequelize,
+	},
+);
+
+export default Ingredient;
