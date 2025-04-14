@@ -130,7 +130,7 @@ export default {
 		// Récupère les informations de l'utilisateur depuis la requête
 		const { email, code } = req.body as {
 			email: string;
-			code: string;
+			code: number;
 		};
 
 		// Vérifie si l'utilisateur existe déjà
