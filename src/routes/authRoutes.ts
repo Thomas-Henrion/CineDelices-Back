@@ -1,10 +1,37 @@
-import express from 'express';
-import authController from '../controllers/authController';
+import express from "express";
+import authController from "../controllers/authController";
+import { LoginSchema } from "../validators/authValidator";
+import { createValidator, type ExpressJoiError } from "express-joi-validation";
 
 const router = express.Router();
 
-router.post('/login', authController.login);
-router.post('/register', authController.register);
-router.post('/confirm', authController.confirmEmail);
+const ContainerTypes = ["body", "query", "headers", "fields", "params"];
+
+router.post(
+	"/login",
+	createValidator({ passError: true }).body(LoginSchema),
+	authController.login,
+);
+router.post("/register", authController.register);
+router.post("/confirm", authController.confirmEmail);
+
+// On veux traiter les erreurs de validation Joi
+router.use(
+	(
+		err: ExpressJoiError,
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		if (err?.type && ContainerTypes.includes(err.type)) {
+			res.status(400).json({
+				message: err.error.message,
+				type: err.type,
+			});
+		} else {
+			next(err);
+		}
+	},
+);
 
 export default router;
