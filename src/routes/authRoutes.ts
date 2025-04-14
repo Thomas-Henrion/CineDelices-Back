@@ -6,7 +6,7 @@ import {
 	ConfirmationSchema,
 } from "../validators/authValidator";
 import { createValidator, type ExpressJoiError } from "express-joi-validation";
-import { isAuthenticated } from "../middlewares/middleware";
+import { isAuthenticated } from "../middlewares/authMiddleware";
 
 const router = express.Router();
 

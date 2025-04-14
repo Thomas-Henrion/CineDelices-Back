@@ -3,7 +3,7 @@ import sequelize from "../index";
 
 class User extends Model {
 	declare id: number;
-	declare name: string;
+	declare username: string;
 	declare email: string;
 	declare password: string;
 	declare verificationCode: number | null;
@@ -17,9 +17,10 @@ User.init(
 			autoIncrement: true,
 			primaryKey: true,
 		},
-		name: {
+		username: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			unique: true,
 		},
 		email: {
 			type: DataTypes.STRING,

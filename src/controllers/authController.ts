@@ -119,7 +119,7 @@ export default {
 			message: "User created successfully",
 			user: {
 				id: newUser.id,
-				name: newUser.name,
+				name: newUser.username,
 				email: newUser.email,
 			},
 			token,
@@ -150,7 +150,7 @@ export default {
 		await user.save();
 
 		// Envoi de l'email de confirmation
-		const recipients = [new Recipient(user.email, user.name)];
+		const recipients = [new Recipient(user.email, user.username)];
 
 		const emailParams = new EmailParams()
 			.setFrom(sentFrom)

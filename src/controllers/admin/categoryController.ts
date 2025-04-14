@@ -67,10 +67,10 @@ export default {
 	getCategoryById: async (req: Request, res: Response): Promise<void> => {
 		const { id } = req.params;
 
-		try{
+		try {
 			const category = await RecipeCategory.findByPk(Number(id));
 
-			if (!category){
+			if (!category) {
 				res.status(404).json({
 					message: "Category not found",
 				});
@@ -83,5 +83,36 @@ export default {
 				message: "Error fetching category",
 			});
 		}
-	}
+	},
+	updateCategory: async (req: Request, res: Response): Promise<void> => {
+		const { id } = req.params;
+		let { name } = req.body as {
+			name: string;
+		};
+
+		name = name.charAt(0).toUpperCase() + name.slice(1);
+
+		try {
+			const category = await RecipeCategory.findByPk(Number(id));
+			if (!category) {
+				res.status(404).json({ message: "Category not found" });
+				return;
+			}
+
+			if (category.name === name) {
+				res.status(409).json({ message: "Another category already has this name"})
+				return;
+			} 
+
+			category.name = name;
+			await category.save();
+
+			res.status(200).json({
+				message: "Category updated successfully",
+				category,
+			});
+		} catch (error) {
+			res.status(500).json({ message: "Error when updating category"})
+		}
+	},
 };

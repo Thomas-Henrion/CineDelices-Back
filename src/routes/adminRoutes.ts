@@ -19,7 +19,7 @@ router.post("/dashboard/categories", categoryController.createCategory);
 router.get("/dashboard/categories", categoryController.getAllCategories);
 router.delete("/dashboard/categories/:id", categoryController.deleteCategory);
 router.get("/dashboard/categories/:id", categoryController.getCategoryById);
-// router.patch("/dashboard/categories", categoryController.updateCategory);
+router.patch("/dashboard/categories/:id", categoryController.updateCategory);
 //// Route for Admin ingredients management
 // router.get("/dashboard/ingredients", .getIngredients);
 // router.get("/dashboard/ingredients/:id", .getIngredientById);
