@@ -6,7 +6,7 @@ class User extends Model {
 	declare name: string;
 	declare email: string;
 	declare password: string;
-	declare vericationCode: string | null;
+	declare verificationCode: string | null;
 	declare role: "admin" | "user";
 }
 
@@ -30,7 +30,7 @@ User.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		vericationCode: {
+		verificationCode: {
 			type: DataTypes.STRING,
 			allowNull: true,
 		},

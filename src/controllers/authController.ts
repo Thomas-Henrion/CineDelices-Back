@@ -78,7 +78,7 @@ export default {
 			name,
 			email,
 			password: hashedPassword,
-			vericationCode: randomVerificationCode,
+			verificationCode: randomVerificationCode,
 		});
 
 		// Création du token JWT et du refresh token
