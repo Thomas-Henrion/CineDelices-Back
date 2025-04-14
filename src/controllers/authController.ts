@@ -16,7 +16,10 @@ export default {
 		};
 
 		const user = await User.findOne({ where: { email } });
-		if (user) throw res.status(400).json({ message: "User already exists" });
+		if (user) {
+			res.status(400).json({ message: "User already exists" });
+			return;
+		}
 
 		const hashedPassword = await argon2.hash(password);
 		const randomVerificationCode = Math.floor(
@@ -28,13 +31,9 @@ export default {
 			password: hashedPassword,
 			vericationCode: randomVerificationCode,
 		});
-		const token = jsonwebtoken.sign(
-			{ id: newUser.id },
-			process.env.JWT_SECRET as string,
-			{
+		const token = jsonwebtoken.sign({ id: newUser.id }, dotenv.JWT.SECRET, {
 				expiresIn: "10m",
-			},
-		);
+		});
 
 		const recipients = [new Recipient(email, name)];
 
@@ -49,9 +48,10 @@ export default {
 		await mailerSend.email.send(emailParams).catch((err) => {
 			console.error("Error sending email:", err);
 			newUser.destroy();
-			throw res.status(500).json({
+			res.status(500).json({
 				message: "Error sending verification email",
 			});
+			return;
 		});
 
 		res.status(201).json({
