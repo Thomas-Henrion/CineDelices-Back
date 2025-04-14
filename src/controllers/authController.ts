@@ -48,6 +48,7 @@ export default {
 
 		await mailerSend.email.send(emailParams).catch((err) => {
 			console.error("Error sending email:", err);
+			newUser.destroy();
 			throw res.status(500).json({
 				message: "Error sending verification email",
 			});
