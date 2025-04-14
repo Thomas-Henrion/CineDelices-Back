@@ -1,13 +1,55 @@
+import argon2 from "argon2";
 import type { Request, Response } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import argon2 from "argon2";
-import User from "../database/models/user";
-import { mailerSend, sentFrom } from "../utils/mail";
-import dotenv from "../utils/dotenv";
 import { EmailParams, Recipient } from "mailersend";
+import User from "../database/models/user";
+import dotenv from "../utils/dotenv";
+import { mailerSend, sentFrom } from "../utils/mail";
 
 export default {
-	login: (req: Request, res: Response) => {},
+	login: async (req: Request, res: Response) => {
+		// Récupère les informations de l'utilisateur depuis la requête
+		const { email, password } = req.body as {
+			email: string;
+			password: string;
+		};
+
+		// Récupère l'utilisateur depuis la base de données
+		const user = await User.findOne({ where: { email } });
+
+		// Vérifie si l'utilisateur existe
+		if (!user) {
+			res.status(401).json({ message: "Invalid credentials" });
+			return;
+		}
+
+		// Vérifie si le mot de passe est correct
+		const passwordValid = await argon2.verify(user.password, password);
+
+		// Vérifie si le mot de passe est correct
+		if (!passwordValid) {
+			res.status(401).json({ message: "Invalid credentials" });
+			return;
+		}
+
+		// Génère un token JWT et un refresh token
+		const token = jsonwebtoken.sign({ id: user.id }, dotenv.JWT.SECRET, {
+			expiresIn: "10m",
+		});
+		const refreshToken = jsonwebtoken.sign(
+			{ id: user.id },
+			dotenv.JWT.REFRESH_SECRET,
+			{
+				expiresIn: "7d",
+			},
+		);
+
+		// Retourne le token et le refresh token
+		res.status(200).json({
+			token,
+			refreshToken,
+		});
+	},
 	register: async (req: Request, res: Response) => {
 		// Récupère les informations de l'utilisateur depuis la requête
 		const { email, password, name } = req.body as {
