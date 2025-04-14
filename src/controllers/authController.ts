@@ -126,5 +126,46 @@ export default {
 			refreshToken,
 		});
 	},
-	confirmEmail: (req: Request, res: Response) => {},
+	confirmEmail: async (req: Request, res: Response) => {
+		// Récupère les informations de l'utilisateur depuis la requête
+		const { email, code } = req.body as {
+			email: string;
+			code: string;
+		};
+
+		// Vérifie si l'utilisateur existe déjà
+		const user = await User.findOne({ where: { email } });
+		if (!user) {
+			res.status(400).json({ message: "Credentials not found" });
+			return;
+		}
+
+		// Vérifie si le code de vérification est correct
+		if (user.verificationCode !== code) {
+			res.status(400).json({ message: "Invalid verification code" });
+			return;
+		}
+
+		user.verificationCode = null;
+		await user.save();
+
+		// Envoi de l'email de confirmation
+		const recipients = [new Recipient(user.email, user.name)];
+
+		const emailParams = new EmailParams()
+			.setFrom(sentFrom)
+			.setTo(recipients)
+			.setSubject("Email verified")
+			.setHtml("<h1>Email verified</h1><p>Your email has been verified.</p>");
+
+		await mailerSend.email.send(emailParams).catch((err) => {
+			console.error("Error sending email:", err);
+			res.status(500).json({
+				message: "Error sending confirmation email",
+			});
+			return;
+		});
+
+		res.status(200).json({ message: "Email verified successfully" });
+	},
 };
