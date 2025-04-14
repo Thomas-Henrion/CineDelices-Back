@@ -4,7 +4,10 @@
   "main": "src/index.ts",
   "type": "commonjs",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only --respawn ."
+    "dev": "ts-node-dev --transpile-only --respawn .",
+    "format": "biome format",
+    "format:write": "biome format --write",
+    "lint": "biome lint"
   },
   "repository": {
     "url": "https://github.com/O-clock-Sigyn/projet-cinedelices"
@@ -30,6 +33,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@types/express": "^5.0.1",
     "@types/jsonwebtoken": "^9.0.9"
   }
