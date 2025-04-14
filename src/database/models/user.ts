@@ -1,7 +1,14 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
 
-class User extends Model {}
+class User extends Model {
+	declare id: number;
+	declare name: string;
+	declare email: string;
+	declare password: string;
+	declare vericationCode: string | null;
+	declare role: "admin" | "user";
+}
 
 User.init(
 	{

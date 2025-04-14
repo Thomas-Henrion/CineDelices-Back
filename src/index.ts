@@ -8,13 +8,15 @@ sequelize
 	.authenticate()
 	.then(() => {
 		console.log("Database connection has been established successfully.");
-		sequelize.sync({ force: true });
+		sequelize.sync({ force: false });
 	})
 	.catch((error) => {
 		console.error("Unable to connect to the database:", error);
 	});
 
 const app = express();
+
+app.use(express.json());
 
 app.set("view engine", "ejs");
 app.set("views", "app/views");

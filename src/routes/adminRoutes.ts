@@ -1,5 +1,5 @@
 import express from 'express';
-import adminController from '../controllers/adminController.mjs';
+import adminController from '../controllers/adminController';
 
 const router = express.Router();
 // Route for Admin dashboard
