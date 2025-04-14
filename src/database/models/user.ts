@@ -31,7 +31,7 @@ User.init(
 			allowNull: false,
 		},
 		verificationCode: {
-			type: DataTypes.NUMBER,
+			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		role: {
