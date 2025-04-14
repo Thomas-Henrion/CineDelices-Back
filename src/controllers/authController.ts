@@ -156,7 +156,9 @@ export default {
 			.setFrom(sentFrom)
 			.setTo(recipients)
 			.setSubject("Email verified")
-			.setHtml("<h1>Email verified</h1><p>Your email has been verified.</p>");
+			.setHtml(
+				"<h1>Email verified</h1><p>Your email has been verified.</p>",
+			);
 
 		await mailerSend.email.send(emailParams).catch((err) => {
 			console.error("Error sending email:", err);
@@ -168,7 +170,5 @@ export default {
 
 		res.status(200).json({ message: "Email verified successfully" });
 	},
-	refreshToken: async (req: Request, res: Response) => {
-
-	}
+	refreshToken: async (req: Request, res: Response) => {},
 };

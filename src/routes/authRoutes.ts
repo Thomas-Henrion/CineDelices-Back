@@ -30,7 +30,9 @@ router.post(
 router.get("/refresh", authController.refreshToken);
 
 router.get("/private", isAuthenticated, (req, res) => {
-	res.status(200).json({ message: `You are authenticated as ${req.user.name}` });
+	res.status(200).json({
+		message: `You are authenticated as ${req.user.name}`,
+	});
 });
 
 // On veux traiter les erreurs de validation Joi
