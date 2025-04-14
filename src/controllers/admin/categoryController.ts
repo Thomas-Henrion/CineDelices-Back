@@ -64,4 +64,24 @@ export default {
 			});
 		}
 	},
+	getCategoryById: async (req: Request, res: Response): Promise<void> => {
+		const { id } = req.params;
+
+		try{
+			const category = await RecipeCategory.findByPk(Number(id));
+
+			if (!category){
+				res.status(404).json({
+					message: "Category not found",
+				});
+				return;
+			}
+
+			res.status(200).json(category);
+		} catch (error) {
+			res.status(500).json({
+				message: "Error fetching category",
+			});
+		}
+	}
 };
