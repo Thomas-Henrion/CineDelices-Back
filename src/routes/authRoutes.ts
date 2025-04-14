@@ -6,6 +6,7 @@ import {
 	ConfirmationSchema,
 } from "../validators/authValidator";
 import { createValidator, type ExpressJoiError } from "express-joi-validation";
+import { isAuthenticated } from "../middlewares/middleware";
 
 const router = express.Router();
 
@@ -26,6 +27,11 @@ router.post(
 	createValidator({ passError: true }).body(ConfirmationSchema),
 	authController.confirmEmail,
 );
+router.get("/refresh", authController.refreshToken);
+
+router.get("/private", isAuthenticated, (req, res) => {
+	res.status(200).json({ message: `You are authenticated as ${req.user.name}` });
+});
 
 // On veux traiter les erreurs de validation Joi
 router.use(

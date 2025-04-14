@@ -168,4 +168,7 @@ export default {
 
 		res.status(200).json({ message: "Email verified successfully" });
 	},
+	refreshToken: async (req: Request, res: Response) => {
+
+	}
 };
