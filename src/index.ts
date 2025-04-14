@@ -3,6 +3,16 @@ import express from "express";
 import routes from "./routes/indexRoutes";
 import sequelize from "./database/index";
 import "./database/association";
+import DotenvSchema from "./validators/dotenvValidator";
+
+// Validation de la configuration de l'environnement
+const { error } = DotenvSchema.validate(process.env, {
+	abortEarly: false,
+	allowUnknown: true,
+});
+if (error) {
+	throw new Error(`Config validation error: ${error.message}`);
+}
 
 sequelize
 	.authenticate()
