@@ -68,10 +68,10 @@ export default {
 		// On hashe le mot de passe
 		const hashedPassword = await argon2.hash(password);
 
-		// Création d'un code de vérification aléatoire
+		// Création d'un code de vérification aléatoire entre 1000 et 9999
 		const randomVerificationCode = Math.floor(
-			1000 + Math.random() * 9000,
-		).toString();
+			Math.random() * (9999 - 1000 + 1) + 1000,
+		);
 
 		// Création de l'utilisateur dans la base de données
 		const newUser = await User.create({
