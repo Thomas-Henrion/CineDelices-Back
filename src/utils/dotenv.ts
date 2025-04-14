@@ -12,6 +12,11 @@ export default {
 		PORT: process.env.DATABASE_PORT as string,
 	},
 
+	JWT: {
+		SECRET: process.env.JWT_SECRET as string,
+		REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
+	},
+
 	MAIL: {
 		APIKEY: process.env.MAIL_APIKEY as string,
 	},
