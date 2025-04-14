@@ -13,8 +13,6 @@ const DotenvSchema = Joi.object({
     MAIL_APIKEY: Joi.string().required(),
 
     PORT: Joi.number().default(3000).required(),
-
-    DATABASE_URL: Joi.string().uri().required(),
 })
 
 export default DotenvSchema;
