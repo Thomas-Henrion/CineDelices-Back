@@ -39,6 +39,12 @@ export default {
 			where,
 			limit: numLimit,
 			offset: numOffset,
+			include: [
+				{
+					model: Recipe,
+					required: false,
+				}
+			]
 		}
 
 		const medias = await Media.findAll(queryOptions
