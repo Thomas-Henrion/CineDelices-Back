@@ -1,7 +1,15 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
+import type { Recipe } from "../association";
 
-class Media extends Model {}
+class Media extends Model {
+	declare id: number;
+	declare title: string;
+	declare coverImage: string;
+	declare anecdote: string;
+
+	declare Recipes?: Recipe[];
+}
 
 Media.init(
 	{

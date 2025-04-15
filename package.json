@@ -5,6 +5,7 @@
 	"type": "commonjs",
 	"scripts": {
 		"dev": "ts-node-dev --transpile-only --respawn .",
+		"seed": "ts-node-dev --transpile-only src/database/seed.ts",
 		"format": "biome format",
 		"format:write": "biome format --write",
 		"lint": "biome lint"

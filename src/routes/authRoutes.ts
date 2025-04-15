@@ -8,30 +8,29 @@ import {
 import { createValidator, type ExpressJoiError } from "express-joi-validation";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 
-const router = express.Router();
+const authRouter = express.Router();
 
-
-router.post(
+authRouter.post(
 	"/login",
 	createValidator({ passError: true }).body(LoginSchema),
 	authController.login,
 );
-router.post(
+authRouter.post(
 	"/register",
 	createValidator({ passError: true }).body(RegisterSchema),
 	authController.register,
 );
-router.post(
+authRouter.post(
 	"/confirm",
 	createValidator({ passError: true }).body(ConfirmationSchema),
 	authController.confirmEmail,
 );
-router.get("/refresh", authController.refreshToken);
+authRouter.get("/refresh", authController.refreshToken);
 
-router.get("/private", isAuthenticated, (req, res) => {
+authRouter.get("/private", isAuthenticated, (req, res) => {
 	res.status(200).json({
 		message: `You are authenticated as ${req.user.name}`,
 	});
 });
 
-export default router;
+export default authRouter;

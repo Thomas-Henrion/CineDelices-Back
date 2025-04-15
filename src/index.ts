@@ -1,6 +1,6 @@
 import config from "./utils/dotenv";
 import express from "express";
-import routes from "./routes/indexRoutes";
+import ApiRouter from "./routes/apiRoutes";
 import sequelize from "./database/index";
 import "./database/association";
 import DotenvSchema from "./validators/dotenvValidator";
@@ -34,7 +34,7 @@ app.set("views", "app/views");
 app.use(express.static("public"));
 
 // Utiliser les routes pour l'api
-app.use("/", routes);
+app.use("/api", ApiRouter);
 
 // On veux traiter les erreurs de validation Joi
 const ContainerTypes = ["body", "query", "headers", "fields", "params"];
@@ -55,7 +55,6 @@ app.use(
 		}
 	},
 );
-
 
 app.listen(config.PORT, () => {
 	console.log(`Server is running on http://localhost:${config.PORT}`);

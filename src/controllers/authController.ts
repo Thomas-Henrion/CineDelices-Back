@@ -52,10 +52,10 @@ export default {
 	},
 	register: async (req: Request, res: Response) => {
 		// Récupère les informations de l'utilisateur depuis la requête
-		const { email, password, name } = req.body as {
+		const { email, password, username } = req.body as {
 			email: string;
 			password: string;
-			name: string;
+			username: string;
 		};
 
 		// Vérifie si l'utilisateur existe déjà
@@ -75,11 +75,11 @@ export default {
 
 		// Création de l'utilisateur dans la base de données
 		const newUser = await User.create({
-			name,
+			username,
 			email,
 			password: hashedPassword,
 			verificationCode: randomVerificationCode,
-		});
+		})
 
 		// Création du token JWT et du refresh token
 		const token = jsonwebtoken.sign({ id: newUser.id }, dotenv.JWT.SECRET, {
@@ -95,7 +95,7 @@ export default {
 		);
 
 		// Envoi de l'email de vérification
-		const recipients = [new Recipient(email, name)];
+		const recipients = [new Recipient(email, username)];
 
 		const emailParams = new EmailParams()
 			.setFrom(sentFrom)
@@ -170,5 +170,42 @@ export default {
 
 		res.status(200).json({ message: "Email verified successfully" });
 	},
-	refreshToken: async (req: Request, res: Response) => {},
+	refreshToken: async (req: Request, res: Response) => {
+		// Récupère le refresh token depuis la requête
+		const { refreshToken } = req.body as { refreshToken: string };
+
+		// Vérifie si le refresh token est présent
+		if (!refreshToken) {
+			res.status(401).json({ message: "Unauthorized" });
+			return;
+		}
+
+		// Vérifie si le refresh token est valide
+		jsonwebtoken.verify(
+			refreshToken,
+			dotenv.JWT.REFRESH_SECRET,
+			async (err, decoded) => {
+				if (err) {
+					res.status(401).json({ message: "Unauthorized" });
+					return;
+				}
+
+				const userId = (decoded as { id: number }).id;
+
+				const user = await User.findByPk(userId);
+				if (!user) {
+					res.status(401).json({ message: "Unauthorized" });
+					return;
+				}
+
+				const token = jsonwebtoken.sign({ id: user.id }, dotenv.JWT.SECRET, {
+					expiresIn: "10m",
+				});
+
+				res.status(200).json({
+					token,
+				});
+			},
+		);
+	},
 };

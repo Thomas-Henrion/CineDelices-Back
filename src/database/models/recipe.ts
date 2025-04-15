@@ -1,7 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
 
-class Recipe extends Model {}
+class Recipe extends Model {
+	declare id: number;
+	declare name: string;
+	declare coverImg: string;
+	declare description: string;
+	declare authorId: number;
+	declare mediaId: number;
+	declare categoryId: number;
+	declare actif: boolean;
+}
 
 Recipe.init(
 	{

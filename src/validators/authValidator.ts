@@ -14,11 +14,11 @@ const LoginSchema = Joi.object({
 });
 
 const RegisterSchema = Joi.object({
-	name: Joi.string().min(3).max(30).required().messages({
-		"string.empty": "Name is required",
-		"string.min": "Name must be at least 3 characters long",
-		"string.max": "Name must be at most 30 characters long",
-		"any.required": "Name is required",
+	username: Joi.string().min(3).max(30).required().messages({
+		"string.empty": "UsernameName is required",
+		"string.min": "UsernameName must be at least 3 characters long",
+		"string.max": "UsernameName must be at most 30 characters long",
+		"any.required": "UsernameName is required",
 	}),
 	email: Joi.string().email().required().messages({
 		"string.empty": "Email is required",
