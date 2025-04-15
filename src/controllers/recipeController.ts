@@ -96,7 +96,7 @@ export default {
 		}
 	},
 	getRecipes: async (req: Request, res: Response): Promise<void> => {
-		let {
+		const {
 			name,
 			ingredientsIds,
 			limit = "25",
@@ -107,11 +107,6 @@ export default {
 			limit: string;
 			offset: string;
 		};
-
-		// Validation des paramètres de pagination
-		if (Number.parseInt(limit, 10) > 100) {
-			limit = "100";
-		}
 
 		// Conversion des paramètres de pagination en nombres
 		const numLimit = Number.parseInt(limit, 10);

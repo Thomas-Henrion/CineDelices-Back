@@ -25,4 +25,11 @@ const CreateRecipeSchema = Joi.object({
 		.required(),
 });
 
-export { CreateRecipeSchema };
+const getRecipesQuerySchema = Joi.object({
+	name: Joi.string().optional(),
+	ingredientsIds: Joi.string().pattern(/^\d+(,\d+)*$/),
+	limit: Joi.number().positive().min(1).max(100).optional(),
+	offset: Joi.number().integer().min(0).optional(),
+})
+
+export { CreateRecipeSchema, getRecipesQuerySchema };
