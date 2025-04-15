@@ -6,8 +6,9 @@ import { CreateRecipeSchema } from "../validators/recipesValidator";
 
 const recipesRouter = express.Router();
 
-recipesRouter.get("/", recipeController.getAllRecipes);
+recipesRouter.get("/", recipeController.getRecipes);
 recipesRouter.get("/:id", recipeController.getRecipeById);
 recipesRouter.post("/", isAuthenticated, createValidator({ passError: true }).body(CreateRecipeSchema), recipeController.createRecipe);
+
 
 export default recipesRouter;

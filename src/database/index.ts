@@ -13,7 +13,7 @@ const sequelize = new Sequelize({
 	database: config.DATABASE.NAME,
 	logging: false,
 	define: {
-		timestamps: false,
+		timestamps: true,
 	},
 });
 
