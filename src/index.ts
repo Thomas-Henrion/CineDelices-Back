@@ -4,6 +4,7 @@ import routes from "./routes/indexRoutes";
 import sequelize from "./database/index";
 import "./database/association";
 import DotenvSchema from "./validators/dotenvValidator";
+import type { ExpressJoiError } from "express-joi-validation";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -34,6 +35,27 @@ app.use(express.static("public"));
 
 // Utiliser les routes pour l'api
 app.use("/", routes);
+
+// On veux traiter les erreurs de validation Joi
+const ContainerTypes = ["body", "query", "headers", "fields", "params"];
+app.use(
+	(
+		err: ExpressJoiError,
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction,
+	) => {
+		if (err?.type && ContainerTypes.includes(err.type)) {
+			res.status(400).json({
+				message: err.error.message,
+				type: err.type,
+			});
+		} else {
+			next(err);
+		}
+	},
+);
+
 
 app.listen(config.PORT, () => {
 	console.log(`Server is running on http://localhost:${config.PORT}`);
