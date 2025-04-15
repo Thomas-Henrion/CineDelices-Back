@@ -1,7 +1,14 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
 
-class User extends Model {}
+class User extends Model {
+	declare id: number;
+	declare username: string;
+	declare email: string;
+	declare password: string;
+	declare verificationCode: number | null;
+	declare role: "admin" | "user";
+}
 
 User.init(
 	{
@@ -10,9 +17,10 @@ User.init(
 			autoIncrement: true,
 			primaryKey: true,
 		},
-		name: {
+		username: {
 			type: DataTypes.STRING,
 			allowNull: false,
+			unique: true,
 		},
 		email: {
 			type: DataTypes.STRING,
@@ -23,8 +31,8 @@ User.init(
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		vericationCode: {
-			type: DataTypes.STRING,
+		verificationCode: {
+			type: DataTypes.INTEGER,
 			allowNull: true,
 		},
 		role: {

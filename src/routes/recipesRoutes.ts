@@ -1,11 +1,13 @@
-import express from 'express';
-import { getAllRecipes, getRecipeById, createRecipe, deleteRecipe } from '../controllers/recipesController';
+import express from "express";
+import recipeController from "../controllers/recipeController";
+import { isAuthenticated } from "../middlewares/authMiddleware";
+import { createValidator } from "express-joi-validation";
+import { CreateRecipeSchema } from "../validators/recipesValidator";
 
-const router = express.Router();
+const recipesRouter = express.Router();
 
-router.get('/', getAllRecipes);
-router.get('/:id', getRecipeById);
-router.post('/', createRecipe);
-router.delete('/:id', deleteRecipe);
+recipesRouter.get("/", recipeController.getAllRecipes);
+recipesRouter.get("/:id", recipeController.getRecipeById);
+recipesRouter.post("/", isAuthenticated, createValidator({ passError: true }).body(CreateRecipeSchema), recipeController.createRecipe);
 
-export default router;
+export default recipesRouter;

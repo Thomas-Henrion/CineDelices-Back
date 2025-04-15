@@ -54,7 +54,7 @@ Ingredient.hasMany(RecipeComposition, {
 	foreignKey: "ingredientId",
 });
 
-export default {
+export {
 	Recipe,
 	User,
 	Media,

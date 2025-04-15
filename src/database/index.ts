@@ -11,10 +11,10 @@ const sequelize = new Sequelize({
 	username: config.DATABASE.USER,
 	password: config.DATABASE.PASS,
 	database: config.DATABASE.NAME,
-	logging: console.log,
+	logging: false,
 	define: {
 		timestamps: false,
-	}
+	},
 });
 
 export default sequelize;
