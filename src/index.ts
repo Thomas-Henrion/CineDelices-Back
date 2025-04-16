@@ -1,10 +1,11 @@
-import config from "./utils/dotenv";
 import express from "express";
-import ApiRouter from "./routes/apiRoutes";
 import sequelize from "./database/index";
+import ApiRouter from "./routes/apiRoutes";
+import config from "./utils/dotenv";
 import "./database/association";
-import DotenvSchema from "./validators/dotenvValidator";
+import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
+import DotenvSchema from "./validators/dotenvValidator";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -28,10 +29,7 @@ sequelize
 const app = express();
 
 app.use(express.json());
-
-// app.set("view engine", "ejs");
-// app.set("views", "app/views");
-// app.use(express.static("public"));
+app.use(bodyParser.json());
 
 // Utiliser les routes pour l'api
 app.use("/api", ApiRouter);
@@ -55,6 +53,13 @@ app.use(
 		}
 	},
 );
+
+// 404 Not Found
+app.use((req, res) => {
+	res.status(404).json({
+		message: "Not Found",
+	});
+});
 
 app.listen(config.PORT, () => {
 	console.log(`Server is running on http://localhost:${config.PORT}`);
