@@ -1,14 +1,13 @@
 import type { Request, Response } from "express";
-import {
-	Recipe,
-	Media,
-	RecipeComposition,
-	Ingredient,
-	RecipeStep,
-	RecipeCategory,
-} from "../database/association";
-import { Op } from "sequelize";
 import type { FindOptions } from "sequelize";
+import { Op } from "sequelize";
+import {
+	Media,
+	Recipe,
+	RecipeCategory,
+	RecipeComposition,
+	RecipeStep,
+} from "../database/association";
 
 export default {
 	getRecipeById: async (req: Request, res: Response): Promise<void> => {
@@ -150,6 +149,7 @@ export default {
 			where,
 			limit: numLimit,
 			offset: numOffset,
+			include: [Media, RecipeComposition],
 		};
 
 		// Si des IDs d'ingrédients sont spécifiés, ajoutez la condition d'inclusion

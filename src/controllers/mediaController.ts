@@ -5,16 +5,10 @@ import type { FindOptions } from "sequelize";
 
 export default {
 	getAllMedias: async (req: Request, res: Response): Promise<void> => {
-		// try {
-		// 	const media = await Media.findAll();
-		// 	res.status(200).json(media);
-		// } catch (error) {
-		// 	res.status(500).json({ error: "Internal Server Error" });
-		// }
 		const {
-			title, 
-			limit = "25", 
-			offset = "0", 
+			title,
+			limit = "25",
+			offset = "0",
 		} = req.query as {
 			title: string;
 			limit: string;
@@ -30,9 +24,9 @@ export default {
 			where = {
 				...where,
 				title: {
-					[Op.like]: `%${title}%`
+					[Op.like]: `%${title}%`,
 				},
-			}
+			};
 		}
 
 		const queryOptions: FindOptions<Media> = {
@@ -43,12 +37,11 @@ export default {
 				{
 					model: Recipe,
 					required: false,
-				}
-			]
-		}
+				},
+			],
+		};
 
-		const medias = await Media.findAll(queryOptions
-		)
+		const medias = await Media.findAll(queryOptions);
 		res.status(200).json(medias);
 	},
 
