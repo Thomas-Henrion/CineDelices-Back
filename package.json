@@ -4,8 +4,10 @@
 	"main": "src/index.ts",
 	"type": "commonjs",
 	"scripts": {
+		"start": "node dist/index.js",
 		"dev": "ts-node-dev --transpile-only --respawn .",
 		"seed": "ts-node-dev --transpile-only src/database/seed.ts",
+		"build": "tsc",
 		"format": "biome format",
 		"format:write": "biome format --write",
 		"lint": "biome lint"
