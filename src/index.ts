@@ -55,11 +55,18 @@ app.use(
 );
 
 // 404 Not Found
-app.use((req, res) => {
-	res.status(404).json({
-		message: "Not Found",
-	});
-});
+app.use(
+	(
+		err: Error,
+		_req: express.Request,
+		res: express.Response,
+		_next: express.NextFunction,
+	) => {
+		res.status(404).json({
+			error: err.message,
+		});
+	},
+);
 
 app.listen(config.PORT, () => {
 	console.log(`Server is running on http://localhost:${config.PORT}`);
