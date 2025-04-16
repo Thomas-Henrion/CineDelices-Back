@@ -79,7 +79,7 @@ export default {
 			email,
 			password: hashedPassword,
 			verificationCode: randomVerificationCode,
-		})
+		});
 
 		// Création du token JWT et du refresh token
 		const token = jsonwebtoken.sign({ id: newUser.id }, dotenv.JWT.SECRET, {
@@ -198,9 +198,13 @@ export default {
 					return;
 				}
 
-				const token = jsonwebtoken.sign({ id: user.id }, dotenv.JWT.SECRET, {
-					expiresIn: "10m",
-				});
+				const token = jsonwebtoken.sign(
+					{ id: user.id },
+					dotenv.JWT.SECRET,
+					{
+						expiresIn: "10m",
+					},
+				);
 
 				res.status(200).json({
 					token,

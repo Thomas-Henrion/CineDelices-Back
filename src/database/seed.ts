@@ -78,7 +78,7 @@ const CreateIngredients = async () => {
 		{
 			id: 8,
 			name: "Pepper",
-		}
+		},
 	];
 
 	for (const ingredient of ingredients) {
@@ -154,7 +154,8 @@ const CreateMedias = async () => {
 			id: 4,
 			title: "Chef",
 			coverImage: "https://picsum.photos/200",
-			anecdote: "Un chef qui part sur la route avec un camion de nourriture.",
+			anecdote:
+				"Un chef qui part sur la route avec un camion de nourriture.",
 		},
 	];
 
@@ -216,7 +217,8 @@ const CreateRecipes = async () => {
 			id: 3,
 			name: "Caesar Salad",
 			coverImg: "https://picsum.photos/200",
-			description: "A fresh salad with romaine lettuce, croutons, and Caesar dressing.",
+			description:
+				"A fresh salad with romaine lettuce, croutons, and Caesar dressing.",
 			authorId: 1,
 			mediaId: 3,
 			categoryId: 3,
@@ -231,7 +233,7 @@ const CreateRecipes = async () => {
 			mediaId: 4,
 			categoryId: 1,
 			actif: true,
-		}
+		},
 	];
 
 	for (const recipe of recipes) {
@@ -243,15 +245,17 @@ const CreateRecipes = async () => {
 };
 
 const CreateRecipesSteps = async () => {
-    const recipeSteps = [
-        {
-            id: 1,
-            description: "Cook the spaghetti according to package instructions.",
-            recipeId: 1,
-        },
+	const recipeSteps = [
+		{
+			id: 1,
+			description:
+				"Cook the spaghetti according to package instructions.",
+			recipeId: 1,
+		},
 		{
 			id: 2,
-			description: "In a pan, heat olive oil and sauté chopped onions and garlic.",
+			description:
+				"In a pan, heat olive oil and sauté chopped onions and garlic.",
 			recipeId: 2,
 		},
 		{
@@ -264,15 +268,15 @@ const CreateRecipesSteps = async () => {
 			description: "Stir in tomato sauce and let simmer for 20 minutes.",
 			recipeId: 4,
 		},
-    ];
+	];
 
-    for (const step of recipeSteps) {
-        const [newStep, created] = await RecipeStep.findOrCreate({
-            where: { id: step.id },
-            defaults: step,
-        });
-    }
-}
+	for (const step of recipeSteps) {
+		const [newStep, created] = await RecipeStep.findOrCreate({
+			where: { id: step.id },
+			defaults: step,
+		});
+	}
+};
 
 const seedDatabase = async () => {
 	await CreateUsers();
@@ -281,5 +285,5 @@ const seedDatabase = async () => {
 	await CreateRecipeCategories();
 	await CreateRecipes();
 	await CreateRecipesComposition();
-    await CreateRecipesSteps();
+	await CreateRecipesSteps();
 };
