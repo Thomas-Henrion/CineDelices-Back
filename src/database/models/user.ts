@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
+import type Recipe from "./recipe";
 
 class User extends Model {
 	declare id: number;
@@ -8,6 +9,9 @@ class User extends Model {
 	declare password: string;
 	declare verificationCode: number | null;
 	declare role: "admin" | "user";
+
+	// Associations
+	declare CreatedRecipes?: Recipe[];
 }
 
 User.init(

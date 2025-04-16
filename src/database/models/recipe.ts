@@ -4,6 +4,7 @@ import type User from "./user";
 import type Media from "./media";
 import type RecipeCategory from "./recipeCategory";
 import type RecipeStep from "./recipeStep";
+import type RecipeComposition from "./recipeComposition";
 
 class Recipe extends Model {
 	declare id: number;
@@ -14,6 +15,13 @@ class Recipe extends Model {
 	declare mediaId: number;
 	declare categoryId: number;
 	declare actif: boolean;
+
+	// Associations
+	declare Author?: User;
+	declare Media?: Media;
+	declare Category?: RecipeCategory;
+	declare Steps?: RecipeStep[];
+	declare Compositions?: RecipeComposition[];
 }
 
 Recipe.init(

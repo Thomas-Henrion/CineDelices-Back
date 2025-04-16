@@ -1,7 +1,14 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
+import type RecipeComposition from "./recipeComposition";
 
-class Ingredient extends Model {}
+class Ingredient extends Model {
+	declare id: number;
+	declare name: string;
+
+	// Associations
+	declare Compositions?: RecipeComposition[];
+}
 
 Ingredient.init(
 	{
