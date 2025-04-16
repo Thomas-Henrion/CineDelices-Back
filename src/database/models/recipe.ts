@@ -1,5 +1,9 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
+import type User from "./user";
+import type Media from "./media";
+import type RecipeCategory from "./recipeCategory";
+import type RecipeStep from "./recipeStep";
 
 class Recipe extends Model {
 	declare id: number;
