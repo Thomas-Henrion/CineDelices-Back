@@ -99,11 +99,11 @@ export default {
 		req: Request,
 		res: Response,
 	): Promise<void> => {
-		const { id } = req.params;
+		const { recipeId } = req.params;
 		const coverImg = req.file as Express.Multer.File;
 
 		try {
-			const recipe = await Recipe.findByPk(id);
+			const recipe = await Recipe.findByPk(recipeId);
 			if (!recipe) {
 				res.status(404).json({ message: "Recipe not found" });
 				return;

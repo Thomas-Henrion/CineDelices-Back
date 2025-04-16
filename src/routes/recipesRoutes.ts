@@ -7,6 +7,7 @@ import {
 	getRecipesQuerySchema,
 } from "../validators/recipesValidator";
 import multer from "../utils/multer";
+import { isAuthorOfRecipe } from "../middlewares/isAuthorOfRecipe";
 
 const recipesRouter = express.Router();
 
@@ -23,8 +24,9 @@ recipesRouter.post(
 	recipeController.createRecipe,
 );
 recipesRouter.put(
-	"/:id/coverImg",
+	"/:recipeId/coverImg",
 	isAuthenticated,
+	isAuthorOfRecipe,
 	multer.single("coverImg"),
 	recipeController.updateRecipeCoverImg,
 );
