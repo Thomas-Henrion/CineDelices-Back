@@ -51,7 +51,7 @@ app.use(
 		next: express.NextFunction,
 	) => {
 		if (err?.type && ContainerTypes.includes(err.type)) {
-			res.status(400).json({
+			res.status(500).json({
 				message: err.error.message,
 				type: err.type,
 			});
