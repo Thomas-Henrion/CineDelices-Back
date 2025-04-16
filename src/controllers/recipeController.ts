@@ -100,7 +100,13 @@ export default {
 						{
 							association: "Steps",
 						},
-					]
+						{
+							association: "Media",
+						},
+						{
+							association: "Category",
+						},
+					],
 				},
 			);
 
@@ -181,6 +187,9 @@ export default {
 				{
 					association: "Author",
 				},
+				{
+					association: "Category",
+				},
 			],
 		};
 
@@ -210,6 +219,9 @@ export default {
 				{
 					association: "Author",
 				},
+				{
+					association: "Category",
+				},
 			];
 		} else {
 			// Si aucun ingrédient n'est spécifié, incluez quand même les compositions, mais sans filtre
@@ -228,6 +240,9 @@ export default {
 				},
 				{
 					association: "Author",
+				},
+				{
+					association: "Category",
 				},
 			];
 		}
