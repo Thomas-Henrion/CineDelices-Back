@@ -3,22 +3,15 @@ import {
 	Recipe,
 	Media,
 	RecipeComposition,
+	Ingredient,
 	RecipeStep,
 	RecipeCategory,
 } from "../database/association";
+import { Op } from "sequelize";
+import type { FindOptions } from "sequelize";
 
 export default {
-	getAllRecipes: async (req: Request, res: Response) => {
-		try {
-			const recipes = await Recipe.findAll();
-			return res.status(200).json(recipes);
-		} catch (error) {
-			return res
-				.status(500)
-				.json({ message: "Error fetching recipes", error });
-		}
-	},
-	getRecipeById: async (req: Request, res: Response) => {
+	getRecipeById: async (req: Request, res: Response): Promise<void> => {
 		const { id } = req.params;
 		try {
 			const recipe = await Recipe.findByPk(id, {
@@ -26,17 +19,16 @@ export default {
 			});
 
 			if (!recipe) {
-				return res.status(404).json({ message: "Recipe not found" });
+				res.status(404).json({ message: "Recipe not found" });
+				return;
 			}
 
-			return res.status(200).json(recipe);
+			res.status(200).json(recipe);
 		} catch (error) {
-			return res
-				.status(500)
-				.json({ message: "Error fetching recipe", error });
+			res.status(500).json({ message: "Error fetching recipe", error });
 		}
 	},
-	createRecipe: async (req: Request, res: Response) => {
+	createRecipe: async (req: Request, res: Response): Promise<void> => {
 		const {
 			name,
 			coverImg,
@@ -74,35 +66,97 @@ export default {
 				return;
 			}
 
-			const recipe = Recipe.build({
-				name,
-				coverImg,
-				description,
-				authorId,
-				mediaId,
-				categoryId,
-				RecipeCompositions: composition.map((item) => ({
-					ingredientId: item.ingredientId,
-					quantity: item.quantity,
-					unit: item.unit,
-				})),
-				RecipeSteps: steps.map((item) => ({
-					description: item.description,
-				})),
-			}, {
-				include: [
-					RecipeComposition,
-					RecipeStep,
-				]
-			});
+			const recipe = Recipe.build(
+				{
+					name,
+					coverImg,
+					description,
+					authorId,
+					mediaId,
+					categoryId,
+					RecipeCompositions: composition.map((item) => ({
+						ingredientId: item.ingredientId,
+						quantity: item.quantity,
+						unit: item.unit,
+					})),
+					RecipeSteps: steps.map((item) => ({
+						description: item.description,
+					})),
+				},
+				{
+					include: [RecipeComposition, RecipeStep],
+				},
+			);
 
 			await recipe.save();
 
-			return res.status(201).json(recipe);
+			res.status(201).json(recipe);
 		} catch (error) {
-			return res
-				.status(500)
-				.json({ message: "Error creating recipe", error });
+			res.status(500).json({ message: "Error creating recipe", error });
 		}
+	},
+	getRecipes: async (req: Request, res: Response): Promise<void> => {
+		const {
+			name,
+			ingredientsIds,
+			limit = "25",
+			offset = "0",
+		} = req.query as {
+			name: string;
+			ingredientsIds: unknown;
+			limit: string;
+			offset: string;
+		};
+
+		// Conversion des paramètres de pagination en nombres
+		const numLimit = Number.parseInt(limit, 10);
+		const numOffset = Number.parseInt(offset, 10);
+
+		// Construction de la requête de base
+		let where = {};
+		if (name) {
+			where = {
+				...where,
+				name: {
+					[Op.like]: `%${name}%`,
+				},
+			};
+		}
+
+		// Options de requête de base
+		const queryOptions: FindOptions<Recipe> = {
+			where,
+			limit: numLimit,
+			offset: numOffset,
+		};
+
+		// Si des IDs d'ingrédients sont spécifiés, ajoutez la condition d'inclusion
+		if (ingredientsIds) {
+			const ingredientIdsArray = (ingredientsIds as string)
+				.split(",")
+				.map((id) => Number.parseInt(id));
+
+			queryOptions.include = [
+				{
+					model: RecipeComposition,
+					where: {
+						ingredientId: {
+							[Op.in]: ingredientIdsArray,
+						},
+					},
+				},
+			];
+		} else {
+			// Si aucun ingrédient n'est spécifié, incluez quand même les compositions, mais sans filtre
+			queryOptions.include = [
+				{
+					model: RecipeComposition,
+					required: false, // Rend cette inclusion optionnelle (LEFT JOIN)
+				},
+			];
+		}
+
+		const recipes = await Recipe.findAll(queryOptions);
+		res.status(200).json(recipes);
 	},
 };

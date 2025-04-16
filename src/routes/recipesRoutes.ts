@@ -2,12 +2,24 @@ import express from "express";
 import recipeController from "../controllers/recipeController";
 import { isAuthenticated } from "../middlewares/authMiddleware";
 import { createValidator } from "express-joi-validation";
-import { CreateRecipeSchema } from "../validators/recipesValidator";
+import {
+	CreateRecipeSchema,
+	getRecipesQuerySchema,
+} from "../validators/recipesValidator";
 
 const recipesRouter = express.Router();
 
-recipesRouter.get("/", recipeController.getAllRecipes);
+recipesRouter.get(
+	"/",
+	createValidator({ passError: true }).params(getRecipesQuerySchema),
+	recipeController.getRecipes,
+);
 recipesRouter.get("/:id", recipeController.getRecipeById);
-recipesRouter.post("/", isAuthenticated, createValidator({ passError: true }).body(CreateRecipeSchema), recipeController.createRecipe);
+recipesRouter.post(
+	"/",
+	isAuthenticated,
+	createValidator({ passError: true }).body(CreateRecipeSchema),
+	recipeController.createRecipe,
+);
 
 export default recipesRouter;

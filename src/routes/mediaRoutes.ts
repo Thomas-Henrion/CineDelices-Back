@@ -1,10 +1,14 @@
 import express from "express";
 import mediaController from "../controllers/mediaController";
+import { getMediasQuerySchema } from "../validators/mediaValidator";
+import { createValidator } from "express-joi-validation"; 
 
-const router = express.Router();
+const mediaRouter = express.Router();
 
-router.get("/", mediaController.getAllMedias);
-router.get("/:id", mediaController.getMediaById);
-router.get("/:id/recipes", mediaController.getMediaRecipes);
+mediaRouter.get("/",
+    createValidator({ passError: true }).params(getMediasQuerySchema),
+    mediaController.getAllMedias);
+mediaRouter.get("/:id", mediaController.getMediaById);
+mediaRouter.get("/:id/recipes", mediaController.getMediaRecipes);
 
-export default router;
+export default mediaRouter;

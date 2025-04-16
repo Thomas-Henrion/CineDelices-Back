@@ -8,7 +8,7 @@ const apiRouter = express.Router();
 
 apiRouter.use("/auth", authRouter);
 apiRouter.use("/categories", categoryRouter);
-apiRouter.use("/media", mediaRouter);
+apiRouter.use("/medias", mediaRouter);
 apiRouter.use("/recipes", recipesRouter);
 
 export default apiRouter;
