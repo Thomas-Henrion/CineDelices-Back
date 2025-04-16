@@ -14,6 +14,10 @@ export const cloudinaryMulterStorage = new CloudinaryStorage({
 	params: (req, file) => {
 		const folderPath = "default";
 		const fileExtension = path.extname(file.originalname).substring(1);
+		const allowedExtensions = ["jpeg", "png", "webp"];
+		if (!allowedExtensions.includes(fileExtension)) {
+			throw new Error("Invalid file type. Only JPEG, PNG, and WEBP are allowed.");
+		}
 		const publicId = `${file.fieldname}-${Date.now()}`;
 
 		return {
