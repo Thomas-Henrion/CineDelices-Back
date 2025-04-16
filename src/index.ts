@@ -6,6 +6,7 @@ import "./database/association";
 import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
+import cors from "cors";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -27,6 +28,12 @@ sequelize
 	});
 
 const app = express();
+
+app.use(
+	cors({
+		origin: "*",
+	}),
+);
 
 app.use(express.json());
 app.use(bodyParser.json());
