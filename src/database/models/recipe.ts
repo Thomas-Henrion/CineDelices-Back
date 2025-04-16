@@ -4,7 +4,7 @@ import sequelize from "../index";
 class Recipe extends Model {
 	declare id: number;
 	declare name: string;
-	declare coverImg: string;
+	declare coverImg?: string;
 	declare description: string;
 	declare authorId: number;
 	declare mediaId: number;
@@ -25,7 +25,7 @@ Recipe.init(
 		},
 		coverImg: {
 			type: DataTypes.STRING,
-			allowNull: false,
+			allowNull: true,
 		},
 		description: {
 			type: DataTypes.STRING,

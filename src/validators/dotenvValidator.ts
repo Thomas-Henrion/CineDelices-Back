@@ -7,6 +7,10 @@ const DotenvSchema = Joi.object({
 	DATABASE_PASSWORD: Joi.string().required(),
 	DATABASE_NAME: Joi.string().required(),
 
+	CLOUDINARY_NAME: Joi.string().required(),
+	CLOUDINARY_API_KEY: Joi.string().required(),
+	CLOUDINARY_API_SECRET: Joi.string().required(),
+
 	JWT_SECRET: Joi.string().min(16).required(),
 	JWT_REFRESH_SECRET: Joi.string().min(16).required(),
 
