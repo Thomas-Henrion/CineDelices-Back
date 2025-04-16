@@ -86,5 +86,5 @@ Pour déployer l'application en production :
 1. Configurez correctement votre fichier `.env` avec les secrets de production.
 2. Utilisez Docker Compose pour le déploiement :
    ```bash
-   docker compose -f docker compose.prod.yaml up -d --build
+   docker compose -f docker-compose.prod.yaml up -d --build
    ```
