@@ -14,7 +14,6 @@ export default {
 		const { id } = req.params;
 		try {
 			const recipe = await Recipe.findByPk(id, {
-				// include: [RecipeComposition, RecipeStep, Media],
 				include: [
 					{
 						association: "Compositions",
@@ -94,7 +93,14 @@ export default {
 					})),
 				},
 				{
-					include: [RecipeComposition, RecipeStep],
+					include: [
+						{
+							association: "Compositions",
+						},
+						{
+							association: "Steps",
+						},
+					]
 				},
 			);
 
@@ -160,7 +166,6 @@ export default {
 			where,
 			limit: numLimit,
 			offset: numOffset,
-			// include: [Media, RecipeComposition],
 			include: [
 				{
 					association: "RecipeComposition",

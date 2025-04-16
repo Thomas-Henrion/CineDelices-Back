@@ -35,7 +35,7 @@ export default {
 			offset: numOffset,
 			include: [
 				{
-					model: Recipe,
+					association: "Recipes",
 					required: false,
 				},
 			],
@@ -63,7 +63,9 @@ export default {
 		const mediaId = req.params.id;
 		try {
 			const media = await Media.findByPk(mediaId, {
-				include: [Recipe],
+				include: [{
+					association: "Recipes",
+				}],
 			});
 			if (!media) {
 				res.status(404).json({ error: "Media not found" });
