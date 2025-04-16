@@ -95,6 +95,28 @@ export default {
 			res.status(500).json({ message: "Error creating recipe", error });
 		}
 	},
+	updateRecipeCoverImg: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		const { recipeId } = req.params;
+		const coverImg = req.file as Express.Multer.File;
+
+		try {
+			const recipe = await Recipe.findByPk(recipeId);
+			if (!recipe) {
+				res.status(404).json({ message: "Recipe not found" });
+				return;
+			}
+
+			recipe.coverImg = coverImg.path;
+			await recipe.save();
+
+			res.status(200).json(recipe);
+		} catch (error) {
+			res.status(500).json({ message: "Error updating recipe", error });
+		}
+	},
 	getRecipes: async (req: Request, res: Response): Promise<void> => {
 		const {
 			name,

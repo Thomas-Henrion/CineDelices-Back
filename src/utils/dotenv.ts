@@ -12,6 +12,12 @@ export default {
 		PORT: process.env.DATABASE_PORT as string,
 	},
 
+	CLOUDINARY: {
+		NAME: process.env.CLOUDINARY_NAME as string,
+		API_KEY: process.env.CLOUDINARY_API_KEY as string,
+		API_SECRET: process.env.CLOUDINARY_API_SECRET as string,
+	},
+
 	JWT: {
 		SECRET: process.env.JWT_SECRET as string,
 		REFRESH_SECRET: process.env.JWT_REFRESH_SECRET as string,
