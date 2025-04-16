@@ -72,7 +72,7 @@ src/
 1. Assurez-vous que Docker et Docker Compose sont installés et en cours d'exécution.
 2. Lancez la base de donnée :
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
 3. Vous pourriez ensuite lancé le projet avec 
    ```bash
@@ -86,5 +86,5 @@ Pour déployer l'application en production :
 1. Configurez correctement votre fichier `.env` avec les secrets de production.
 2. Utilisez Docker Compose pour le déploiement :
    ```bash
-   docker-compose -f docker-compose.prod.yaml up -d --build
+   docker compose -f docker compose.prod.yaml up -d --build
    ```
