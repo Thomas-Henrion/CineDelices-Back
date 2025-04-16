@@ -279,7 +279,7 @@ const seedDatabase = async () => {
 	await CreateMedias();
 	await CreateIngredients();
 	await CreateRecipeCategories();
-	await CreateRecipesComposition();
 	await CreateRecipes();
+	await CreateRecipesComposition();
     await CreateRecipesSteps();
 };
