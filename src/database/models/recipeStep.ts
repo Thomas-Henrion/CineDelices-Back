@@ -1,7 +1,16 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../index";
+import type Recipe from "./recipe";
 
-class RecipeStep extends Model {}
+class RecipeStep extends Model {
+	declare id: number;
+	declare recipeId: number;
+	declare stepNumber: number;
+	declare description: string;
+
+	// Associations
+	declare Recipe?: Recipe;
+}
 
 RecipeStep.init(
 	{

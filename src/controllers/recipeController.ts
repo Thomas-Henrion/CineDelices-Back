@@ -14,7 +14,18 @@ export default {
 		const { id } = req.params;
 		try {
 			const recipe = await Recipe.findByPk(id, {
-				include: [RecipeComposition, RecipeStep, Media],
+				// include: [RecipeComposition, RecipeStep, Media],
+				include: [
+					{
+						association: "Compositions",
+					},
+					{
+						association: "Steps",
+					},
+					{
+						association: "Media",
+					},
+				],
 			});
 
 			if (!recipe) {
@@ -149,7 +160,23 @@ export default {
 			where,
 			limit: numLimit,
 			offset: numOffset,
-			include: [Media, RecipeComposition],
+			// include: [Media, RecipeComposition],
+			include: [
+				{
+					association: "RecipeComposition",
+					include: [
+						{
+							association: "Ingredient",
+						},
+					],
+				},
+				{
+					association: "Media",
+				},
+				{
+					association: "Author",
+				},
+			],
 		};
 
 		// Si des IDs d'ingrédients sont spécifiés, ajoutez la condition d'inclusion
@@ -160,20 +187,42 @@ export default {
 
 			queryOptions.include = [
 				{
-					model: RecipeComposition,
+					association: "Compositions",
+					include: [
+						{
+							association: "Ingredient",
+						},
+					],
 					where: {
 						ingredientId: {
 							[Op.in]: ingredientIdsArray,
 						},
 					},
 				},
+				{
+					association: "Media",
+				},
+				{
+					association: "Author",
+				},
 			];
 		} else {
 			// Si aucun ingrédient n'est spécifié, incluez quand même les compositions, mais sans filtre
 			queryOptions.include = [
 				{
-					model: RecipeComposition,
+					association: "Compositions",
 					required: false, // Rend cette inclusion optionnelle (LEFT JOIN)
+					include: [
+						{
+							association: "Ingredient",
+						},
+					],
+				},
+				{
+					association: "Media",
+				},
+				{
+					association: "Author",
 				},
 			];
 		}
