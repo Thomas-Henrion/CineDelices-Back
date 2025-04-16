@@ -30,6 +30,10 @@ API backend pour le projet Cinedelices, une plateforme dédiée au cinéma et à
    DATABASE_NAME=cinedelice
    DATABASE_PORT=3306
 
+   CLOUDINARY_NAME=
+   CLOUDINARY_API_KEY=
+   CLOUDINARY_API_SECRET=
+
    PORT=3000
 
    JWT_SECRET=votre_secret_jwt_tres_securise
@@ -40,6 +44,8 @@ API backend pour le projet Cinedelices, une plateforme dédiée au cinéma et à
    > **Note**: Pour les variables JWT_SECRET et JWT_REFRESH_SECRET, générez des chaînes aléatoires sécurisées.
    
    > Pour obtenir une clé API MailerSend, créez un compte sur [MailerSend](https://www.mailersend.com/).
+
+   > Pour obtention de la clé API Cloudinary, créez un compte sur [Cloudinary](https://cloudinary.com/).
 
 ## Structure du projet
 
