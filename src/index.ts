@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
+import { limiter } from "./middlewares/rateLimitValidator";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -38,7 +39,9 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 
-// Utiliser les routes pour l'api
+//Use rateLimit on all route
+app.use(limiter);
+// Use the route for API
 app.use("/api", ApiRouter);
 
 // On veux traiter les erreurs de validation Joi
