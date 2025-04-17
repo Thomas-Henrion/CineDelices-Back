@@ -15,7 +15,6 @@ export default {
 			offset: string;
 		};
 
-		// Conversion des paramètres de pagination en nombres
 		const numLimit = Number.parseInt(limit, 10);
 		const numOffset = Number.parseInt(offset, 10);
 

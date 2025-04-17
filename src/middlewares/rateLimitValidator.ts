@@ -1,5 +1,6 @@
 import { rateLimit } from "express-rate-limit"
 
+// Add rate limiting middleware
 export const limiter = rateLimit({
     windowMs: 10 * 1000, // define number for 10 sec
     limit: 10, // Limit each IP to 10 requests
