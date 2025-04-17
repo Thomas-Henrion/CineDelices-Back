@@ -2,252 +2,251 @@ import type { Request, Response } from "express";
 import type { FindOptions } from "sequelize";
 import { Op } from "sequelize";
 import {
-	Media,
-	Recipe,
-	RecipeCategory,
-	RecipeComposition,
-	RecipeStep,
+    Media,
+    Recipe,
+    RecipeCategory,
+    RecipeComposition,
+    RecipeStep,
 } from "../database/association";
 
 export default {
-	getRecipeById: async (req: Request, res: Response): Promise<void> => {
-		const { id } = req.params;
-		try {
-			const recipe = await Recipe.findByPk(id, {
-				include: [
-					{
-						association: "Compositions",
-					},
-					{
-						association: "Steps",
-					},
-					{
-						association: "Media",
-					},
-				],
-			});
+    getRecipeById: async (req: Request, res: Response): Promise<void> => {
+        const { id } = req.params;
+        try {
+            const recipe = await Recipe.findByPk(id, {
+                include: [
+                    {
+                        association: "Compositions",
+                    },
+                    {
+                        association: "Steps",
+                    },
+                    {
+                        association: "Media",
+                    },
+                ],
+            });
 
-			if (!recipe) {
-				res.status(404).json({ message: "Recipe not found" });
-				return;
-			}
+            if (!recipe) {
+                res.status(404).json({ message: "Recipe not found" });
+                return;
+            }
 
-			res.status(200).json(recipe);
-		} catch (error) {
-			res.status(500).json({ message: "Error fetching recipe", error });
-		}
-	},
-	createRecipe: async (req: Request, res: Response): Promise<void> => {
-		const {
-			name,
-			coverImg,
-			description,
-			authorId,
-			mediaId,
-			categoryId,
-			composition,
-			steps,
-		} = req.body as {
-			name: string;
-			coverImg: string;
-			description: string;
-			authorId: number;
-			mediaId: number;
-			categoryId: number;
-			composition: {
-				ingredientId: number;
-				quantity: number;
-				unit: string;
-			}[];
-			steps: { description: string }[];
-		};
+            res.status(200).json(recipe);
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching recipe", error });
+        }
+    },
+    createRecipe: async (req: Request, res: Response): Promise<void> => {
+        const {
+            name,
+            coverImg,
+            description,
+            authorId,
+            mediaId,
+            categoryId,
+            composition,
+            steps,
+        } = req.body as {
+            name: string;
+            coverImg: string;
+            description: string;
+            authorId: number;
+            mediaId: number;
+            categoryId: number;
+            composition: {
+                ingredientId: number;
+                quantity: number;
+                unit: string;
+            }[];
+            steps: { description: string }[];
+        };
 
-		try {
-			const media = await Media.findByPk(mediaId);
-			if (!media) {
-				res.status(404).json({ message: "Media not found" });
-				return;
-			}
+        try {
+            const media = await Media.findByPk(mediaId);
+            if (!media) {
+                res.status(404).json({ message: "Media not found" });
+                return;
+            }
 
-			const category = await RecipeCategory.findByPk(categoryId);
-			if (!category) {
-				res.status(404).json({ message: "Recipe category not found" });
-				return;
-			}
+            const category = await RecipeCategory.findByPk(categoryId);
+            if (!category) {
+                res.status(404).json({ message: "Recipe category not found" });
+                return;
+            }
 
-			const recipe = Recipe.build(
-				{
-					name,
-					coverImg,
-					description,
-					authorId,
-					mediaId,
-					categoryId,
-					RecipeCompositions: composition.map((item) => ({
-						ingredientId: item.ingredientId,
-						quantity: item.quantity,
-						unit: item.unit,
-					})),
-					RecipeSteps: steps.map((item) => ({
-						description: item.description,
-					})),
-				},
-				{
-					include: [
-						{
-							association: "Compositions",
-						},
-						{
-							association: "Steps",
-						},
-						{
-							association: "Media",
-						},
-						{
-							association: "Category",
-						},
-					],
-				},
-			);
+            const recipe = Recipe.build(
+                {
+                    name,
+                    coverImg,
+                    description,
+                    authorId,
+                    mediaId,
+                    categoryId,
+                    RecipeCompositions: composition.map((item) => ({
+                        ingredientId: item.ingredientId,
+                        quantity: item.quantity,
+                        unit: item.unit,
+                    })),
+                    RecipeSteps: steps.map((item) => ({
+                        description: item.description,
+                    })),
+                },
+                {
+                    include: [
+                        {
+                            association: "Compositions",
+                        },
+                        {
+                            association: "Steps",
+                        },
+                        {
+                            association: "Media",
+                        },
+                        {
+                            association: "Category",
+                        },
+                    ],
+                },
+            );
 
-			await recipe.save();
+            await recipe.save();
 
-			res.status(201).json(recipe);
-		} catch (error) {
-			res.status(500).json({ message: "Error creating recipe", error });
-		}
-	},
-	updateRecipeCoverImg: async (
-		req: Request,
-		res: Response,
-	): Promise<void> => {
-		const { recipeId } = req.params;
-		const coverImg = req.file as Express.Multer.File;
+            res.status(201).json(recipe);
+        } catch (error) {
+            res.status(500).json({ message: "Error creating recipe", error });
+        }
+    },
+    updateRecipeCoverImg: async (
+        req: Request,
+        res: Response,
+    ): Promise<void> => {
+        const { recipeId } = req.params;
+        const coverImg = req.file as Express.Multer.File;
 
-		try {
-			const recipe = await Recipe.findByPk(recipeId);
-			if (!recipe) {
-				res.status(404).json({ message: "Recipe not found" });
-				return;
-			}
+        try {
+            const recipe = await Recipe.findByPk(recipeId);
+            if (!recipe) {
+                res.status(404).json({ message: "Recipe not found" });
+                return;
+            }
 
-			recipe.coverImg = coverImg.path;
-			await recipe.save();
+            recipe.coverImg = coverImg.path;
+            await recipe.save();
 
-			res.status(200).json(recipe);
-		} catch (error) {
-			res.status(500).json({ message: "Error updating recipe", error });
-		}
-	},
-	getRecipes: async (req: Request, res: Response): Promise<void> => {
-		const {
-			name,
-			ingredientsIds,
-			limit = "25",
-			offset = "0",
-		} = req.query as {
-			name: string;
-			ingredientsIds: unknown;
-			limit: string;
-			offset: string;
-		};
+            res.status(200).json(recipe);
+        } catch (error) {
+            res.status(500).json({ message: "Error updating recipe", error });
+        }
+    },
+    getRecipes: async (req: Request, res: Response): Promise<void> => {
+        const {
+            name,
+            ingredientsIds,
+            limit = "25",
+            offset = "0",
+        } = req.query as {
+            name: string;
+            ingredientsIds: unknown;
+            limit: string;
+            offset: string;
+        };
 
-		// Conversion des paramètres de pagination en nombres
-		const numLimit = Number.parseInt(limit, 10);
-		const numOffset = Number.parseInt(offset, 10);
+        const numLimit = Number.parseInt(limit, 10);
+        const numOffset = Number.parseInt(offset, 10);
 
-		// Construction de la requête de base
-		let where = {};
-		if (name) {
-			where = {
-				...where,
-				name: {
-					[Op.like]: `%${name}%`,
-				},
-			};
-		}
+        // Build the base query
+        let where = {};
+        if (name) {
+            where = {
+                ...where,
+                name: {
+                    [Op.like]: `%${name}%`,
+                },
+            };
+        }
 
-		// Options de requête de base
-		const queryOptions: FindOptions<Recipe> = {
-			where,
-			limit: numLimit,
-			offset: numOffset,
-			include: [
-				{
-					association: "RecipeComposition",
-					include: [
-						{
-							association: "Ingredient",
-						},
-					],
-				},
-				{
-					association: "Media",
-				},
-				{
-					association: "Author",
-				},
-				{
-					association: "Category",
-				},
-			],
-		};
+        // Base query options
+        const queryOptions: FindOptions<Recipe> = {
+            where,
+            limit: numLimit,
+            offset: numOffset,
+            include: [
+                {
+                    association: "RecipeComposition",
+                    include: [
+                        {
+                            association: "Ingredient",
+                        },
+                    ],
+                },
+                {
+                    association: "Media",
+                },
+                {
+                    association: "Author",
+                },
+                {
+                    association: "Category",
+                },
+            ],
+        };
 
-		// Si des IDs d'ingrédients sont spécifiés, ajoutez la condition d'inclusion
-		if (ingredientsIds) {
-			const ingredientIdsArray = (ingredientsIds as string)
-				.split(",")
-				.map((id) => Number.parseInt(id));
+        // If ingredient IDs are specified, add the inclusion condition
+        if (ingredientsIds) {
+            const ingredientIdsArray = (ingredientsIds as string)
+                .split(",")
+                .map((id) => Number.parseInt(id));
 
-			queryOptions.include = [
-				{
-					association: "Compositions",
-					include: [
-						{
-							association: "Ingredient",
-						},
-					],
-					where: {
-						ingredientId: {
-							[Op.in]: ingredientIdsArray,
-						},
-					},
-				},
-				{
-					association: "Media",
-				},
-				{
-					association: "Author",
-				},
-				{
-					association: "Category",
-				},
-			];
-		} else {
-			// Si aucun ingrédient n'est spécifié, incluez quand même les compositions, mais sans filtre
-			queryOptions.include = [
-				{
-					association: "Compositions",
-					required: false, // Rend cette inclusion optionnelle (LEFT JOIN)
-					include: [
-						{
-							association: "Ingredient",
-						},
-					],
-				},
-				{
-					association: "Media",
-				},
-				{
-					association: "Author",
-				},
-				{
-					association: "Category",
-				},
-			];
-		}
+            queryOptions.include = [
+                {
+                    association: "Compositions",
+                    include: [
+                        {
+                            association: "Ingredient",
+                        },
+                    ],
+                    where: {
+                        ingredientId: {
+                            [Op.in]: ingredientIdsArray,
+                        },
+                    },
+                },
+                {
+                    association: "Media",
+                },
+                {
+                    association: "Author",
+                },
+                {
+                    association: "Category",
+                },
+            ];
+        } else {
+            // If no ingredient is specified, still include compositions, but without filtering
+            queryOptions.include = [
+                {
+                    association: "Compositions",
+                    required: false, // Makes this inclusion optional (LEFT JOIN)
+                    include: [
+                        {
+                            association: "Ingredient",
+                        },
+                    ],
+                },
+                {
+                    association: "Media",
+                },
+                {
+                    association: "Author",
+                },
+                {
+                    association: "Category",
+                },
+            ];
+        }
 
-		const recipes = await Recipe.findAll(queryOptions);
-		res.status(200).json(recipes);
-	},
+        const recipes = await Recipe.findAll(queryOptions);
+        res.status(200).json(recipes);
+    },
 };
