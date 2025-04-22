@@ -29,7 +29,7 @@ authRouter.get("/refresh", authController.refreshToken);
 
 authRouter.get("/private", isAuthenticated, (req, res) => {
 	res.status(200).json({
-		message: `You are authenticated as ${req.user.name}`,
+		message: `You are authenticated as ${req.user.username}`,
 	});
 });
 
