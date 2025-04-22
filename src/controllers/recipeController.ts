@@ -117,6 +117,8 @@ export default {
 			res.status(500).json({ message: "Error creating recipe", error });
 		}
 	},
+
+	
 	updateRecipeCoverImg: async (
 		req: Request,
 		res: Response,
@@ -139,6 +141,8 @@ export default {
 			res.status(500).json({ message: "Error updating recipe", error });
 		}
 	},
+
+	
 	getRecipes: async (req: Request, res: Response): Promise<void> => {
 		const {
 			name,

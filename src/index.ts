@@ -7,6 +7,7 @@ import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
+import adminRouter from "./routes/admin/adminRoutes";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -16,6 +17,7 @@ const { error } = DotenvSchema.validate(process.env, {
 if (error) {
 	throw new Error(`Config validation error: ${error.message}`);
 }
+console.log(config.MAIL.APIKEY);
 
 sequelize
 	.authenticate()
@@ -40,6 +42,9 @@ app.use(bodyParser.json());
 
 // Utiliser les routes pour l'api
 app.use("/api", ApiRouter);
+
+// Utiliser les routes pour l'api admin
+app.use("/admin", adminRouter);
 
 // On veux traiter les erreurs de validation Joi
 const ContainerTypes = ["body", "query", "headers", "fields", "params"];
