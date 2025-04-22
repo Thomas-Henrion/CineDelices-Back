@@ -17,6 +17,11 @@ export default {
                 include: [
                     {
                         association: "Compositions",
+                        include: [
+                            {
+                                association: "Ingredient",
+                            },
+                        ],
                     },
                     {
                         association: "Steps",
@@ -24,6 +29,10 @@ export default {
                     {
                         association: "Media",
                     },
+                    {
+                        association: "Author",
+                        attributes: ["id", "username"],
+                    }
                 ],
             });
 
@@ -96,6 +105,11 @@ export default {
                     include: [
                         {
                             association: "Compositions",
+                            include: [
+                                {
+                                    association: "Ingredient",
+                                },
+                            ],
                         },
                         {
                             association: "Steps",
@@ -185,6 +199,7 @@ export default {
                 },
                 {
                     association: "Author",
+                    attributes: ["id", "username"],
                 },
                 {
                     association: "Category",
@@ -217,6 +232,7 @@ export default {
                 },
                 {
                     association: "Author",
+                    attributes: ["id", "username"],
                 },
                 {
                     association: "Category",
@@ -239,6 +255,7 @@ export default {
                 },
                 {
                     association: "Author",
+                    attributes: ["id", "username"],
                 },
                 {
                     association: "Category",
