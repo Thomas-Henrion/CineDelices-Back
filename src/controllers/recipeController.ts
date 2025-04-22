@@ -30,8 +30,7 @@ export default {
                         association: "Media",
                     },
                     {
-                        association: "Author",
-                        attributes: ["id", "username"],
+                        association: "Author"
                     }
                 ],
             });

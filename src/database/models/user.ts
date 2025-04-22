@@ -46,6 +46,9 @@ User.init(
 	},
 	{
 		sequelize,
+		defaultScope: {
+			attributes: { exclude: ["password", "verificationCode"] },
+		},
 	},
 );
 
