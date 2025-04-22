@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import type { FindOptions } from "sequelize";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import {
     Media,
     Recipe,
@@ -145,15 +145,18 @@ export default {
             ingredientsIds,
             limit = "25",
             offset = "0",
+            random = "false",
         } = req.query as {
             name: string;
             ingredientsIds: unknown;
             limit: string;
             offset: string;
+            random: string;
         };
 
         const numLimit = Number.parseInt(limit, 10);
         const numOffset = Number.parseInt(offset, 10);
+        const isRandom = random === "true";
 
         // Build the base query
         let where = {};
@@ -190,6 +193,7 @@ export default {
                     association: "Category",
                 },
             ],
+            order: isRandom ? [Sequelize.literal("RAND()")] : undefined
         };
 
         // If ingredient IDs are specified, add the inclusion condition
