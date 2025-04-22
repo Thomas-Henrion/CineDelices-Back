@@ -12,13 +12,7 @@ export default {
 
 		res.status(200).json({
 			message: "User profile",
-			user: {
-				id: user.id,
-				name: user.name,
-				email: user.email,
-				createdAt: user.createdAt,
-				updatedAt: user.updatedAt,
-			},
+			user,
 		});
 	},
 };
