@@ -6,7 +6,7 @@ export default {
   getAllCategories: async (req: Request, res: Response): Promise<void> => {
     try {
       const categories = await RecipeCategory.findAll();
-      res.render("categories", { categories });
+      res.render("recipesCategories", { categories });
     } catch (error) {
       res.render("404");
     }

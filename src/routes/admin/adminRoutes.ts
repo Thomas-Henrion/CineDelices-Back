@@ -1,7 +1,7 @@
 import  express  from "express";
 
 import mediasRouter from "./mediasRoutes";
-import recipesRouter from "../recipesRoutes";
+import recipesRouter from "./recipesRoutes";
 import usersRouter from "./usersRoutes";
 import ingredientsRouter from "./ingredientsRoutes";
 import categoriesRouter from "./categoriesRoutes";

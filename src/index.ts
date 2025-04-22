@@ -8,6 +8,7 @@ import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
 import adminRouter from "./routes/admin/adminRoutes";
+import path from "path";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -42,6 +43,15 @@ app.use(bodyParser.json());
 
 // Utiliser les routes pour l'api
 app.use("/api", ApiRouter);
+
+
+
+// Middleware pour gérer les fichiers
+app.set("view engine","ejs");
+app.set('views', path.join(__dirname, 'views'));
+
+app.use(express.static("public"));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Utiliser les routes pour l'api admin
 app.use("/admin", adminRouter);
