@@ -18,7 +18,7 @@ export default {
 		const user = await User.findOne({
 			where: { email },
 			attributes: {
-				include: ["password"],
+				include: ["password", "verificationCode"],
 			},
 		});
 
@@ -38,9 +38,18 @@ export default {
 		}
 
 		// Generate a JWT token and a refresh token
-		const token = jsonwebtoken.sign({ id: user.id }, dotenv.JWT.SECRET, {
-			expiresIn: "10m",
-		});
+		const token = jsonwebtoken.sign(
+			{
+				id: user.id,
+				email: user.email,
+				username: user.username,
+				isConfirmed: user.verificationCode == null,
+			},
+			dotenv.JWT.SECRET,
+			{
+				expiresIn: "10m",
+			},
+		);
 		const refreshToken = jsonwebtoken.sign(
 			{ id: user.id },
 			dotenv.JWT.REFRESH_SECRET,
@@ -87,9 +96,18 @@ export default {
 		});
 
 		// Create the JWT token and the refresh token
-		const token = jsonwebtoken.sign({ id: newUser.id }, dotenv.JWT.SECRET, {
-			expiresIn: "10m",
-		});
+		const token = jsonwebtoken.sign(
+			{
+				id: newUser.id,
+				email: newUser.email,
+				username: newUser.username,
+				isConfirmed: newUser.verificationCode == null,
+			},
+			dotenv.JWT.SECRET,
+			{
+				expiresIn: "10m",
+			},
+		);
 
 		const refreshToken = jsonwebtoken.sign(
 			{ id: newUser.id },
@@ -209,7 +227,12 @@ export default {
 				}
 
 				const token = jsonwebtoken.sign(
-					{ id: user.id },
+					{
+						id: user.id,
+						email: user.email,
+						username: user.username,
+						isConfirmed: user.verificationCode == null,
+					},
 					dotenv.JWT.SECRET,
 					{
 						expiresIn: "10m",
