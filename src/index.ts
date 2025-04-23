@@ -44,14 +44,12 @@ app.use(bodyParser.json());
 // Utiliser les routes pour l'api
 app.use("/api", ApiRouter);
 
-
-
 // Middleware pour gérer les fichiers
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine","ejs");
 app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, "public")));
 
-app.use(express.static("public"));
-app.use(bodyParser.urlencoded({ extended: true }));
 
 // Utiliser les routes pour l'api admin
 app.use("/admin", adminRouter);
