@@ -5,7 +5,7 @@ export default {
   getAllMedias: async (req: Request, res: Response): Promise<void> => {
     try {
       const medias = await Media.findAll();
-      res.render("medias", { medias });
+      res.render("medias/medias", { medias });
     } catch (error) {
       res.render("404");
     }
@@ -19,7 +19,7 @@ export default {
         res.status(404).send("Media par ID not found");
         return;
       }
-      res.render("mediaId", { media });
+      res.render("medias/mediaId", { media });
     } catch (error) {
       res.status(500).send("Error fetching media");
     }
@@ -27,21 +27,21 @@ export default {
 
   createForm: async (req: Request, res: Response): Promise<void> => {
     try {
-      res.render("createMedia");
+      res.render("medias/addMedia");
     } catch (error) {
       res.status(500).send("Error rendering create media form");
     }
   },
 
-  // createMedia: async (req: Request, res: Response): Promise<void> => {
-  //   try {
-  //     const media = await Media.create(req.body);
-  //     console.log(media);
-  //     res.redirect("/admin/medias");
-  //   } catch (error) {
-  //     res.status(500).send("Error creating media");
-  //   }
-  // },
+  createMedia: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const media = await Media.create(req.body);
+      console.log(media);
+      res.redirect("/admin/medias");
+    } catch (error) {
+      res.status(500).send("Error creating media");
+    }
+  },
 
   updateForm: async (req: Request, res: Response): Promise<void> => {
     try {
@@ -50,7 +50,7 @@ export default {
         res.status(404).send("Form Media  not found");
         return;
       }
-      res.render("updateMedia", { media });
+      res.render("medias/updateMedia", { media });
     } catch (error) {
       res.status(500).send("Error fetching media for update");
     }
@@ -82,15 +82,15 @@ export default {
     try {
       const deleteID = req.params.id;
 
-      const media = await Media.findByPk(deleteID)
-           if (!media) {
+      const media = await Media.findByPk(deleteID);
+      if (!media) {
         res.status(404).send("Media delete not found");
         return;
       }
       await media.destroy();
       res.redirect("/admin/medias");
     } catch (error) {
-      console.error('Erreur serveur :', error);
+      console.error("Erreur serveur :", error);
       res.status(500).send("Error deleting media");
     }
   },

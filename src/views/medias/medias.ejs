@@ -1,0 +1,53 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Médias</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Nom</th>
+        <th class="column-title">Anectode</th>
+        <th class="column-title">Image</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% medias.forEach(media => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= media.title%></td>
+        <td class="row-table"><%= media.anecdote%></td>
+        <td class="row-table"><%= media.coverImage%></td>
+        <td class="row-table-link">
+          <form
+            class="form-button"
+            action="medias/<%= media.id %>"
+            method="get"
+          >
+            <button class="button-link" type="submit">Voir</button>
+          </form>
+          <form
+            class="form-button"
+            action="medias/update/<%= media.id %>"
+            method="get"
+          >
+            <button class="button-link" type="submit">Modifier</button>
+          </form>
+
+          <form
+            class="form-button"
+            action="medias/delete/<%= media.id %>"
+            method="post"
+          >
+            <button class="button-link" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <a class="link-add-data" href="/admin/medias/create">Ajouter un média</a>
+</div>
+
+<%- include('../partials/footer.ejs') %>

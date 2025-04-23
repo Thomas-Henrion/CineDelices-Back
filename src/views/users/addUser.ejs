@@ -1,0 +1,23 @@
+<%- include('../partials/header.ejs') %>
+
+<form class="form-update-media" method="post">
+
+    <label for="title">Username</label>
+    <input type="text" name="username" id="title" placeholder="pseudo" value="">
+
+    <label for="title">Password</label>
+    <input type="text" name="password" id="title" placeholder="password" value="">
+    
+    <label for="anecdote">email:</label>
+    <input type="text" name="email" id="anecdote" placeholder="email" value="">
+    
+    <label for="image">Role:</label>
+    <input type="text" name="role" id="image" placeholder="Rôle" value="">
+    
+    <button class="button-form" type="submit">Créer</button>
+    <button class="button-form" type="reset">Annuler</button>
+   
+    
+</form>
+
+<%- include('../partials/footer.ejs') %>

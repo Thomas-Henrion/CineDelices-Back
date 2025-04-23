@@ -9,6 +9,10 @@ import categoriesRouter from "./categoriesRoutes";
 
 const adminRouter = express.Router();
 
+adminRouter.get("/", (req, res) => {
+  res.render('main')});
+
+  
 adminRouter.use("/medias", mediasRouter);
 adminRouter.use("/recipes", recipesRouter);
 adminRouter.use("/users", usersRouter);

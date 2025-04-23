@@ -1,0 +1,20 @@
+<%- include('../partials/header.ejs') %>
+
+    <form class="form-update-media" method="post">
+
+        <label for="title">Titre :</label>
+        <input type="text" name="title" id="title" placeholder="titre du film" value="<%= media.title%>">
+        
+        <label for="anecdote">Anecdote :</label>
+        <input type="text" name="anecdote" id="anecdote" placeholder="anecdote" value="<%= media.anecdote%>">
+        
+        <label for="image">Lien image :</label>
+        <input type="text" name="coverImage" id="image" placeholder="lien de l'image" value="<%= media.coverImage%>">
+        
+        <button class="button-form" type="submit">Modifier</button>
+        <button class="button-form" type="reset">Annuler</button>
+       
+        
+    </form>
+    
+<%- include('../partials/footer.ejs') %>

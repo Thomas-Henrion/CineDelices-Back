@@ -1,0 +1,36 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Catégories</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Nom</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.forEach(categorie => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= categorie.name%></td>
+       
+        <td class="row-table-link">
+       
+          <form
+            class="form-button"
+            action="categories/delete/<%= categorie.id %>"
+            method="post"
+          >
+            <button class="button-link" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <a class="link-add-data" href="/admin/categories/create">Créer une catégorie</a>
+</div>
+
+<%- include('../partials/footer.ejs') %>

@@ -1,0 +1,47 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Utilisateurs</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Username</th>
+        <th class="column-title">Email</th>
+        <th class="column-title">Role</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% users.forEach(user => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= user.username%></td>
+        <td class="row-table"><%= user.email%></td>
+        <td class="row-table"><%= user.role%></td>
+        <td class="row-table-link">
+       
+          <form
+            class="form-button"
+            action="users/update/<%= user.id %>"
+            method="get"
+          >
+            <button class="button-link" type="submit">Modifier</button>
+          </form>
+
+          <form
+            class="form-button"
+            action="users/delete/<%= user.id %>"
+            method="post"
+          >
+            <button class="button-link" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <a class="link-add-data" href="/admin/users/create">Créer un utilisateur</a>
+</div>
+
+<%- include('../partials/footer.ejs') %>

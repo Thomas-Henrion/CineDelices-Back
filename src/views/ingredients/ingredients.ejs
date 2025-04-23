@@ -1,0 +1,35 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Ingrédients</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Nom</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% ingredients.forEach(ingredient => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= ingredient.name%></td>
+        <td class="row-table-link">
+          <form
+            class="form-button"
+            action="ingredients/delete/<%= ingredient.id %>"
+            method="post"
+          >
+            <button class="button-link" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+
+    </tbody>
+  </table>
+
+  <a class="link-add-data" href="/admin/ingredients/create">Ajouter un ingredient</a>
+</div>
+
+<%- include('../partials/footer.ejs') %>

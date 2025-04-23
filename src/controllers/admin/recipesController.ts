@@ -6,7 +6,7 @@ export default {
     getAllRecipes: async (req: Request, res: Response): Promise<void> => {
         try {
             const recipes = await Recipe.findAll();
-            res.render("recipes", {recipes});
+            res.render("/recipes/recipes", {recipes});
         } catch (error) {
             res.render("404")
         }

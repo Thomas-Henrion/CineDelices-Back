@@ -5,10 +5,11 @@ const mediasRouter = express.Router();
 
 mediasRouter.get('/', mediasController.getAllMedias);
 
-mediasRouter.get('/:id', mediasController.getMediaById);
-
 // Route to create a new media
 mediasRouter.get('/create', mediasController.createForm);
+mediasRouter.post('/create', mediasController.createMedia);
+
+mediasRouter.get('/:id', mediasController.getMediaById);
 
 
 // Route to update a media
