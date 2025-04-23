@@ -18,7 +18,7 @@ export default {
 		const user = await User.findOne({
 			where: { email },
 			attributes: {
-				include: ["password"],
+				include: ["password", "verificationCode"],
 			},
 		});
 
@@ -43,7 +43,7 @@ export default {
 				id: user.id,
 				email: user.email,
 				username: user.username,
-				isConfirmed: !!user.verificationCode,
+				isConfirmed: user.verificationCode == null,
 			},
 			dotenv.JWT.SECRET,
 			{
@@ -101,7 +101,7 @@ export default {
 				id: newUser.id,
 				email: newUser.email,
 				username: newUser.username,
-				isConfirmed: !!newUser.verificationCode,
+				isConfirmed: newUser.verificationCode == null,
 			},
 			dotenv.JWT.SECRET,
 			{
@@ -231,7 +231,7 @@ export default {
 						id: user.id,
 						email: user.email,
 						username: user.username,
-						isConfirmed: !!user.verificationCode,
+						isConfirmed: user.verificationCode == null,
 					},
 					dotenv.JWT.SECRET,
 					{
