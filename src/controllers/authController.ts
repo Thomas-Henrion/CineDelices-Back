@@ -43,6 +43,7 @@ export default {
 				id: user.id,
 				email: user.email,
 				username: user.username,
+				isConfirmed: !!user.verificationCode,
 			},
 			dotenv.JWT.SECRET,
 			{
@@ -100,6 +101,7 @@ export default {
 				id: newUser.id,
 				email: newUser.email,
 				username: newUser.username,
+				isConfirmed: !!newUser.verificationCode,
 			},
 			dotenv.JWT.SECRET,
 			{
@@ -225,7 +227,12 @@ export default {
 				}
 
 				const token = jsonwebtoken.sign(
-					{ id: user.id },
+					{
+						id: user.id,
+						email: user.email,
+						username: user.username,
+						isConfirmed: !!user.verificationCode,
+					},
 					dotenv.JWT.SECRET,
 					{
 						expiresIn: "10m",
