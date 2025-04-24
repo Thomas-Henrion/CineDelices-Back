@@ -155,12 +155,14 @@ export default {
     getRecipes: async (req: Request, res: Response): Promise<void> => {
         const {
             name,
+            categoryId,
             ingredientsIds,
             limit = "25",
             offset = "0",
             random = "false",
         } = req.query as {
             name: string;
+            categoryId: string;
             ingredientsIds: unknown;
             limit: string;
             offset: string;
@@ -179,6 +181,13 @@ export default {
                 name: {
                     [Op.like]: `%${name}%`,
                 },
+            };
+        }
+
+        if (categoryId) {
+            where = {
+                ...where,
+                categoryId: Number(categoryId),
             };
         }
 
