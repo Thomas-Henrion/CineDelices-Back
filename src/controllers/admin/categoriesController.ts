@@ -1,0 +1,33 @@
+import { RecipeCategory } from "../../database/association";
+import { Request, Response } from "express";
+
+export default {
+
+  getAllCategories: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const categories = await RecipeCategory.findAll();
+      res.render("categories/categories", { categories });
+    } catch (error) {
+      res.render("404");
+    }
+  },
+  createForm: async (req: Request, res: Response): Promise<void> => {
+		try {
+		  res.render("categories/addCategory");
+		} catch (error) {
+		  res.status(500).send("Error rendering create media form");
+		}
+	  },
+
+	createCategory: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const category = await RecipeCategory.create(req.body);
+			console.log(category);
+			res.redirect("/admin/categories");
+		} catch (error) {
+			res.status(500).send("Error creating category");
+		}
+	},
+
+ 
+};
