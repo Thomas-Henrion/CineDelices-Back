@@ -48,7 +48,6 @@ export default {
     createRecipe: async (req: Request, res: Response): Promise<void> => {
         const {
             name,
-            coverImg,
             description,
             authorId,
             mediaId,
@@ -57,7 +56,6 @@ export default {
             steps,
         } = req.body as {
             name: string;
-            coverImg: string;
             description: string;
             authorId: number;
             mediaId: number;
@@ -83,20 +81,19 @@ export default {
                 return;
             }
 
-            const recipe = Recipe.build(
+            const recipe = await Recipe.create(
                 {
                     name,
-                    coverImg,
                     description,
                     authorId,
                     mediaId,
                     categoryId,
-                    RecipeCompositions: composition.map((item) => ({
+                    Compositions: composition.map((item) => ({
                         ingredientId: item.ingredientId,
                         quantity: item.quantity,
                         unit: item.unit,
                     })),
-                    RecipeSteps: steps.map((item) => ({
+                    Steps: steps.map((item) => ({
                         description: item.description,
                     })),
                 },
@@ -122,8 +119,6 @@ export default {
                     ],
                 },
             );
-
-            await recipe.save();
 
             res.status(201).json(recipe);
         } catch (error) {
@@ -189,7 +184,7 @@ export default {
             offset: numOffset,
             include: [
                 {
-                    association: "RecipeComposition",
+                    association: "Composition",
                     include: [
                         {
                             association: "Ingredient",
