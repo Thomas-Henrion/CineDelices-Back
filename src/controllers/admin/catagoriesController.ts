@@ -1,5 +1,5 @@
 import { RecipeCategory } from "../../database/association";
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 
 export default {
 
