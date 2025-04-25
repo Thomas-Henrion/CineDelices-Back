@@ -222,7 +222,7 @@ const CreateRecipes = async () => {
 			authorId: 1,
 			mediaId: 3,
 			categoryId: 3,
-			actif: true,
+			actif: false,
 		},
 		{
 			id: 4,
@@ -232,7 +232,7 @@ const CreateRecipes = async () => {
 			authorId: 1,
 			mediaId: 4,
 			categoryId: 1,
-			actif: true,
+			actif: false,
 		},
 	];
 
