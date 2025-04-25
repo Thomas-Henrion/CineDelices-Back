@@ -10,6 +10,7 @@ import cors from "cors";
 import adminRouter from "./routes/admin/adminRoutes";
 import path from "path";
 import { setupSession, initUserLocals } from "./middlewares/setupSession";
+import usersRouter from "./routes/admin/usersRoutes";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -58,6 +59,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Utiliser les routes pour l'api admin
 app.use("/admin", adminRouter);
+
 
 // On veux traiter les erreurs de validation Joi
 const ContainerTypes = ["body", "query", "headers", "fields", "params"];

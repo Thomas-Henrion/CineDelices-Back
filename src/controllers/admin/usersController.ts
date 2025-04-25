@@ -25,7 +25,7 @@ export default {
       res.redirect("/admin/users");
     } catch (error) {
       console.error("Error creating user:", error);
-      res.status(500).send("Error creating media");
+      res.status(500).send("Error creating user");
     }
   },
 

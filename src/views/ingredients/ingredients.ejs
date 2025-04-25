@@ -1,35 +1,134 @@
 <%- include('../partials/header.ejs') %>
 
-<div class="main">
-  <h1>Ingrédients</h1>
+    <div class="main">
+        <h1>Ingrédients</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="column-title">Nom</th>
-        <th class="column-title"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% ingredients.forEach(ingredient => { %>
-      <tr class="row-table-header">
-        <td class="row-table"><%= ingredient.name%></td>
-        <td class="row-table-link">
-          <form
-            class="form-button"
-            action="ingredients/delete/<%= ingredient.id %>"
-            method="post"
-          >
-            <button class="button-link" type="submit">Supprimer</button>
-          </form>
-        </td>
-      </tr>
-      <% }) %>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="column-title">Nom</th>
+                    <th class="column-title"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% ingredients.forEach(ingredient=> { %>
+                    <tr class="row-table-header">
+                        <td class="row-table">
+                            <%= ingredient.name%>
+                        </td>
+                        <td class="row-table-link">
+                            <form class="form-button delete-form" action="ingredients/delete/<%= ingredient.id %>"
+                                method="post">
+                                <button class="button-link delete-btn" type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
 
-    </tbody>
-  </table>
+        <a class="link-add-data" href="#" id="openAddIngredientModal">Ajouter un ingrédient</a>
+    </div>
 
-  <a class="link-add-data" href="/admin/ingredients/create">Ajouter un ingredient</a>
-</div>
 
-<%- include('../partials/footer.ejs') %>
+
+    <!-- Modal Ajout Ingrédient -->
+    <div class="modal addIngredientModal" id="addIngredientModal">
+        <div class="modal-content">
+            <h2>Ajouter un ingrédient</h2>
+            <form class="form-add-ingredient" method="post" action="/admin/ingredients/create">
+                <div class="form-group">
+                    <label for="ingredientName">Nom de l'ingrédient</label>
+                    <input type="text" name="name" id="ingredientName" placeholder="Nom de l'ingrédient" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="confirm-btn">Ajouter</button>
+                    <button type="button" class="cancel-btn" id="cancelAddIngredient">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Modal Suppression Ingrédient -->
+    <div class="modal deleteIngredientModal" id="deleteIngredientModal">
+        <div class="modal-content">
+            <h2>Suppression d'ingrédient</h2>
+            <p>Êtes-vous certain de vouloir supprimer cet ingrédient ?</p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" id="confirmDeleteIngredient">Oui</button>
+                <button class="cancel-btn" id="cancelDeleteIngredient">Non</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // --- Ajouter un ingrédient ---
+        const addIngredientModal = document.getElementById('addIngredientModal');
+        const cancelAddIngredient = document.getElementById('cancelAddIngredient');
+
+        // Afficher la modale quand l'utilisateur clique sur le lien "Ajouter un ingrédient"
+        const openAddIngredientModal = document.getElementById('openAddIngredientModal');
+        openAddIngredientModal.addEventListener('click', function (e) {
+            e.preventDefault();
+            addIngredientModal.style.display = 'flex';
+        });
+
+        // Annuler = cacher la modale
+        cancelAddIngredient.addEventListener('click', function () {
+            addIngredientModal.style.display = 'none';
+        });
+
+        // Fermer la modale si on clique à l'extérieur
+        window.addEventListener('click', function (e) {
+            if (e.target === addIngredientModal) {
+                addIngredientModal.style.display = 'none';
+            }
+        });
+
+
+
+        // --- Suppression Ingrédient ---
+        const deleteIngredientModal = document.getElementById('deleteIngredientModal');
+        const confirmDeleteIngredient = document.getElementById('confirmDeleteIngredient');
+        const cancelDeleteIngredient = document.getElementById('cancelDeleteIngredient');
+        let currentDeleteForm = null;
+
+        // Lier les boutons "Supprimer"
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                currentDeleteForm = this.closest('.delete-form');
+                deleteIngredientModal.style.display = 'flex';
+            });
+        });
+
+        // Confirmer la suppression
+        confirmDeleteIngredient.addEventListener('click', function () {
+            if (currentDeleteForm) {
+                currentDeleteForm.submit();  // Soumettre le formulaire de suppression
+            }
+        });
+
+        // Annuler la suppression
+        cancelDeleteIngredient.addEventListener('click', function () {
+            deleteIngredientModal.style.display = 'none';
+            currentDeleteForm = null;
+        });
+
+        // Fermer la modale si clic à l'extérieur
+        window.addEventListener('click', function (e) {
+            if (e.target === deleteIngredientModal) {
+                deleteIngredientModal.style.display = 'none';
+                currentDeleteForm = null;
+            }
+        });
+
+
+    </script>
+
+
+
+
+    <%- include('../partials/footer.ejs') %>

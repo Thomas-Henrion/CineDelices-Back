@@ -1,95 +1,229 @@
 <%- include('../partials/header.ejs') %>
 
-<div class="main">
-  <h1>Utilisateurs</h1>
+    <div class="main">
+        <h1>Utilisateurs</h1>
 
-  <table class="table">
-    <thead>
-      <tr>
-        <th class="column-title">Username</th>
-        <th class="column-title">Email</th>
-        <th class="column-title">Role</th>
-        <th class="column-title"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <% users.forEach(user => { %>
-      <tr class="row-table-header">
-        <td class="row-table"><%= user.username%></td>
-        <td class="row-table"><%= user.email%></td>
-        <td class="row-table"><%= user.role%></td>
-        <td class="row-table-link">
-       
-          <form
-            class="form-button"
-            action="users/update/<%= user.id %>"
-            method="get"
-          >
-            <button class="button-link" type="submit">Modifier</button>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="column-title">Username</th>
+                    <th class="column-title">Email</th>
+                    <th class="column-title">Role</th>
+                    <th class="column-title"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user=> { %>
+                    <tr class="row-table-header">
+                        <td class="row-table">
+                            <%= user.username%>
+                        </td>
+                        <td class="row-table">
+                            <%= user.email%>
+                        </td>
+                        <td class="row-table">
+                            <%= user.role%>
+                        </td>
+                        <td class="row-table-link">
+
+                            <form class="form-button edit-form" action="users/update/<%= user.id %>" method="post">
+                                <button class="button-link edit-btn" type="button"> Modifier</button>
+                            </form>
+
+                            <form class="form-button delete-form" action="users/delete/<%= user.id %>" method="post">
+                                <button class="button-link delete-btn" type="button">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </tbody>
+        </table>
+
+        <a class="link-add-data" href="#" id="openCreateModal">Créer un utilisateur</a>
+    </div>
+
+
+
+
+    <!-- Modal Création -->
+    <div class="modal createModal" id="createModal">
+        <div class="modal-content">
+            <h2>Créer un utilisateur</h2>
+            <form id="form" method="post" action="/admin/users/create">
+                <div class="form-group">
+                    <label for="userName">Nom de l'utilisateur</label>
+                    <input type="text" id="userName" name="username" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mot de passe</label>
+                    <input type="password" id="password" name="password" value="" required>
+                </div>
+                <div class="form-group">
+                    <label for="userRole">Rôle</label>
+                    <select id="userRole" name="role">
+                        <option value="user">USER</option>
+                        <option value="admin">ADMIN</option>
+                    </select>
+                </div>
+                <div class="modal-buttons">
+                    <button type="submit" class="confirm-btn">Sauvegarder</button>
+                    <button type="button" class="cancel-btn" id="cancelCreate">Annuler</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Suppression -->
+    <div class="modal deleteModal" id="deleteModal">
+        <div class="modal-content">
+            <h2>Suppression utilisateur</h2>
+            <p>Êtes-vous certain de vouloir supprimer cet utilisateur ?</p>
+            <div class="modal-buttons">
+                <button class="confirm-btn" id="confirmDelete">Oui</button>
+                <button class="cancel-btn" id="cancelDelete">Non</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal Modification Rôle -->
+    <div class="modal editModal" id="editModal">
+        <div class="modal-content">
+          <h2>Modifier le rôle de l'utilisateur</h2>
+          <form id="editRoleForm" method="post" action="/admin/users/update/:id">
+            <div class="form-group">
+              <label for="editRoleSelect">Rôle</label>
+              <select id="editRoleSelect" name="role" required>
+                <option value="user">USER</option>
+                <option value="admin">ADMIN</option>
+              </select>
+            </div>
+            <div class="modal-buttons">
+              <button type="submit" class="confirm-btn">Valider</button>
+              <button type="button" class="cancel-btn" id="cancelEdit">Annuler</button>
+            </div>
           </form>
-
-          <form
-            class="form-button"
-            action="users/delete/<%= user.id %>"
-            method="post"
-          >
-            <button class="button-link" type="submit">Supprimer</button>
-          </form>
-        </td>
-      </tr>
-      <% }) %>
-    </tbody>
-  </table>
-
-  <a class="link-add-data" href="#" id="openModal">Créer un utilisateur</a>
-</div>
-
-
-
-<div class="createModal" id="modal">
-  <div class="modal-content">
-    <h2>Créer un utilisateur</h2>
-    <form id="form">
-      <div class="form-group">
-        <label for="userName">Nom de l'utilisateur</label>
-        <input type="text" id="userName" name="username" required>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="userRole">Rôle</label>
-        <select id="userRole" name="role">
-          <option value="USER">USER</option>
-          <option value="ADMIN">ADMIN</option>
-        </select>
-      </div>
-      <div class="modal-buttons">
-        <button type="submit" class="confirm-btn">Sauvegarder</button>
-        <button type="button" class="cancel-btn" id="closeModal">Annuler</button>
-      </div>
-    </form>
-  </div>
-</div>
 
 
-<script>
-document.getElementById('openModal').addEventListener('click', function(e) {
-  e.preventDefault(); // empêche la redirection
-  document.getElementById('modal').style.display = 'block';
+
+
+    <script>
+        // --- Création ---
+        const createModal = document.getElementById('createModal');
+        const openCreate = document.getElementById('openCreateModal');
+        const cancelCreate = document.getElementById('cancelCreate');
+
+        openCreate.addEventListener('click', function (e) {
+            e.preventDefault();
+            createModal.style.display = 'flex';
+        });
+
+        cancelCreate.addEventListener('click', function () {
+            createModal.style.display = 'none';
+        });
+
+
+        // --- Suppression ---
+        const deleteModal = document.getElementById('deleteModal');
+        const confirmDelete = document.getElementById('confirmDelete');
+        const cancelDelete = document.getElementById('cancelDelete');
+        let currentDeleteForm = null;
+
+        // Lier les boutons "Supprimer"
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                currentDeleteForm = this.closest('.delete-form');
+                deleteModal.style.display = 'flex';
+            });
+        });
+
+        confirmDelete.addEventListener('click', function () {
+            if (currentDeleteForm) {
+                currentDeleteForm.submit();
+            }
+        });
+
+        cancelDelete.addEventListener('click', function () {
+            deleteModal.style.display = 'none';
+            currentDeleteForm = null;
+        });
+
+
+        // --- Modifier rôle ---
+const editModal = document.getElementById('editModal');
+const editForm = document.getElementById('editRoleForm');
+const editSelect = document.getElementById('editRoleSelect');
+const cancelEdit = document.getElementById('cancelEdit');
+
+// Quand on clique sur un bouton "Modifier"
+document.querySelectorAll('.edit-btn').forEach(button => {
+  button.addEventListener('click', function () {
+    // Récupère l'ID de l'utilisateur depuis l'URL du formulaire
+    const userId = this.closest('form').action.split('/').pop(); 
+
+    // Met à jour l'action du formulaire pour inclure l'ID
+    editForm.action = `/admin/users/update/${userId}`;
+
+    // Récupère le rôle actuel (à partir du tableau ou de l'utilisateur)
+    const currentRole = this.closest('tr').querySelector('td:nth-child(3)').innerText.trim(); // Récupère le rôle actuel de l'utilisateur dans la table
+
+    // Met à jour le select avec le rôle actuel
+    editSelect.value = currentRole.toLowerCase();  // Assurez-vous que la valeur de select est "user" ou "admin"
+
+    // Affiche la modale
+    editModal.style.display = 'flex';
+  });
 });
 
-document.getElementById('closeModal').addEventListener('click', function() {
-  document.getElementById('modal').style.display = 'none';
+// Annuler = on cache la modale
+cancelEdit.addEventListener('click', function () {
+  editModal.style.display = 'none';
 });
 
-// Fermer en cliquant hors de la modale
-window.addEventListener('click', function(e) {
-  const modal = document.getElementById('modal');
-  if (e.target === modal) {
-    modal.style.display = 'none';
+// Fermer si clic en dehors de la modale
+window.addEventListener('click', function (e) {
+  if (e.target === editModal) {
+    editModal.style.display = 'none';
   }
 });
-</script>
+
+        // Annuler = on cache la modale
+        cancelEdit.addEventListener('click', function () {
+            editModal.style.display = 'none';
+        });
+
+        // Fermer si clic en dehors de la modale
+        window.addEventListener('click', function (e) {
+            if (e.target === editModal) {
+                editModal.style.display = 'none';
+            }
+        });
+
+
+        // Fermer modale si clic à l'extérieur
+        window.addEventListener('click', function (e) {
+            if (e.target === createModal) {
+                createModal.style.display = 'none';
+            }
+            if (e.target === deleteModal) {
+                deleteModal.style.display = 'none';
+                currentDeleteForm = null;
+            }
+        });
+    </script>
+
+    </body>
 
 
 
 
-<%- include('../partials/footer.ejs') %>
+    <%- include('../partials/footer.ejs') %>
