@@ -41,7 +41,55 @@
     </tbody>
   </table>
 
-  <a class="link-add-data" href="/admin/users/create">Créer un utilisateur</a>
+  <a class="link-add-data" href="#" id="openModal">Créer un utilisateur</a>
 </div>
+
+
+
+<div class="createModal" id="modal">
+  <div class="modal-content">
+    <h2>Créer un utilisateur</h2>
+    <form id="form">
+      <div class="form-group">
+        <label for="userName">Nom de l'utilisateur</label>
+        <input type="text" id="userName" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="userRole">Rôle</label>
+        <select id="userRole" name="role">
+          <option value="USER">USER</option>
+          <option value="ADMIN">ADMIN</option>
+        </select>
+      </div>
+      <div class="modal-buttons">
+        <button type="submit" class="confirm-btn">Sauvegarder</button>
+        <button type="button" class="cancel-btn" id="closeModal">Annuler</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+document.getElementById('openModal').addEventListener('click', function(e) {
+  e.preventDefault(); // empêche la redirection
+  document.getElementById('modal').style.display = 'block';
+});
+
+document.getElementById('closeModal').addEventListener('click', function() {
+  document.getElementById('modal').style.display = 'none';
+});
+
+// Fermer en cliquant hors de la modale
+window.addEventListener('click', function(e) {
+  const modal = document.getElementById('modal');
+  if (e.target === modal) {
+    modal.style.display = 'none';
+  }
+});
+</script>
+
+
+
 
 <%- include('../partials/footer.ejs') %>

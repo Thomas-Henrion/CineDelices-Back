@@ -27,16 +27,6 @@ export default {
 
     validateRecipesById: async (req: Request, res: Response): Promise<void> => {
         try {
-<<<<<<< HEAD
-            const validateId = req.params.id;
-
-            const recipes = await Recipe.findByPk(validateId);
-        if (!recipes) {
-            res.status(404).send("Recipe par ID not found");
-            return;
-        }
-        res.render("recipes/validateRecipe", { recipes });
-=======
             const recipe = await Recipe.findByPk(id,{
                 include : [
                     {
@@ -57,7 +47,6 @@ export default {
             console.log(recipe);
             
             res.render("recipes/validateRecipe", { recipe });
->>>>>>> 08fd263a565f0711c4a1a825091c6dcfed039231
         } catch (error) {
         res.status(500).send("Error fetching recipes");
     }
