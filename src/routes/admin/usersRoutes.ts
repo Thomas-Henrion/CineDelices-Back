@@ -5,7 +5,10 @@ const usersRouter = express.Router();
 
 usersRouter.get('/', usersController.getAllUsers);
 usersRouter.get('/create', usersController.createForm);
-usersRouter.post('/create', usersController.CreateUser);
+usersRouter.post('/create', usersController.createUser);
+usersRouter.get('/update/:id', usersController.updateForm);
+usersRouter.post('/update/:id', usersController.updateUser);
+usersRouter.post('/delete/:id', usersController.deleteUser);
 
 
 

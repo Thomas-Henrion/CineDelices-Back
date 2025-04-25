@@ -5,6 +5,7 @@ import recipesRouter from "./recipesRoutes";
 import usersRouter from "./usersRoutes";
 import ingredientsRouter from "./ingredientsRoutes";
 import categoriesRouter from "./categoriesRoutes";
+import authRouter from "./authRoutes";
 
 
 const adminRouter = express.Router();
@@ -18,5 +19,6 @@ adminRouter.use("/recipes", recipesRouter);
 adminRouter.use("/users", usersRouter);
 adminRouter.use("/ingredients", ingredientsRouter);
 adminRouter.use("/categories", categoriesRouter);
+adminRouter.use("/auth", authRouter);
 
 export default adminRouter;

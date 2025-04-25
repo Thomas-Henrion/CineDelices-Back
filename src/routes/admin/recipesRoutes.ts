@@ -4,6 +4,7 @@ import recipesController from '../../controllers/admin/recipesController';
 const recipesRouter = express.Router();
 
 recipesRouter.get('/', recipesController.getAllRecipes);
+recipesRouter.get('/validate/:id', recipesController.validateRecipesById);
 
 // Route to validate a new recipe
 recipesRouter.get('/validate/:id', recipesController.validateRecipesById);

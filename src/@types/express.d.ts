@@ -7,3 +7,11 @@ declare global {
 		}
 	}
 }
+
+declare module "express-session" {
+	interface SessionData {
+	  test: string
+	  userId: number;
+	  user: User;
+	}
+  }

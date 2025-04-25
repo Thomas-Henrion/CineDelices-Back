@@ -2,6 +2,8 @@ import { Media } from "../../database/association";
 import type { Request, Response } from "express";
 
 export default {
+
+  
   getAllMedias: async (req: Request, res: Response): Promise<void> => {
     try {
       const medias = await Media.findAll();

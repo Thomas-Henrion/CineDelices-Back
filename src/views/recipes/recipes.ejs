@@ -1,0 +1,46 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Recettes</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Nom</th>
+        <th class="column-title">Média</th>
+        <th class="column-title">Editeur</th>
+        <th class="column-title">Catégory</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% recipes.forEach(recipe => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= recipe.name %></td>
+        <td class="row-table"><%= recipe.mediaId%></td>
+        <td class="row-table"><%= recipe.authorId%></td>
+        <td class="row-table"><%= recipe.categoryId%></td>
+        <td class="row-table-link">
+          <form
+            class="form-button"
+            action="recipes/validate/<%= recipe.id %>"
+            method="get"
+          >
+            <button class="button-link" type="submit">Valider</button>
+          </form>
+
+          <form
+            class="form-button"
+            action="recipes/delete/<%= recipe.id %>"
+            method="post"
+          >
+            <button class="button-link" type="submit">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('../partials/footer.ejs') %>

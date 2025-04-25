@@ -9,6 +9,7 @@ import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
 import adminRouter from "./routes/admin/adminRoutes";
 import path from "path";
+import { setupSession, initUserLocals } from "./middlewares/setupSession";
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {
@@ -40,6 +41,10 @@ app.use(
 
 app.use(express.json());
 app.use(bodyParser.json());
+
+// Middleware pour gérer les sessions
+app.use(setupSession);
+app.use(initUserLocals);
 
 // Utiliser les routes pour l'api
 app.use("/api", ApiRouter);

@@ -19,4 +19,7 @@
             <a href="/admin/medias">Médias</a>
             <a href="/admin/categories">Catégories</a>
             </div>
+            <% if (typeof user !== "undefined") { %>
+            Coucou <%= user.username %>
+            <% } %>
         </header>
