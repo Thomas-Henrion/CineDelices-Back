@@ -38,7 +38,6 @@ export default {
   createMedia: async (req: Request, res: Response): Promise<void> => {
     try {
       const media = await Media.create(req.body);
-      console.log(media);
       res.redirect("/admin/medias");
     } catch (error) {
       res.status(500).send("Error creating media");
@@ -73,7 +72,7 @@ export default {
           id: MediaID,
         },
       });
-      console.log(media);
+      
       res.redirect("/admin/medias");
     } catch (error) {
       res.status(500).send("Error updating media");

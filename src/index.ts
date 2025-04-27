@@ -10,7 +10,7 @@ import cors from "cors";
 import adminRouter from "./routes/admin/adminRoutes";
 import path from "path";
 import { setupSession, initUserLocals } from "./middlewares/setupSession";
-import usersRouter from "./routes/admin/usersRoutes";
+
 
 // Validation de la configuration de l'environnement
 const { error } = DotenvSchema.validate(process.env, {

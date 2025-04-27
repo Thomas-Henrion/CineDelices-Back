@@ -9,7 +9,6 @@ export const setupSession = session({
     secret: process.env.SECRET_KEY as string,
     resave: false,
     saveUninitialized: false,
-    // ! IL FAUDRA TOUJOURS METTRE SECURE à TRUE SAUF pendant le developpement
     cookie: { secure: false, httpOnly: true }
 });
 

@@ -22,12 +22,21 @@ export default {
 	createCategory: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const category = await RecipeCategory.create(req.body);
-			console.log(category);
+			
 			res.redirect("/admin/categories");
 		} catch (error) {
 			res.status(500).send("Error creating category");
 		}
 	},
-
+	
+	deleteCategory: async (req: Request, res: Response): Promise<void> => {
+		try {
+		  const { id } = req.params;
+		  await RecipeCategory.destroy({ where: { id } });
+		  res.redirect("/admin/categories");
+		} catch (error) {
+		  res.status(500).send("Error deleting category");
+		}
+	  },
  
 };

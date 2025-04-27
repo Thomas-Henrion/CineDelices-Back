@@ -1,13 +1,25 @@
 <%- include('./partials/header.ejs') %>
 
       <div class="main">
-        <h1>Accueil</h1>
-        <p>
-          Ceci est le contenu principal de la page. La sidebar est à gauche
-          comme un header vertical.
-        </p>
+
+            <% if (!locals.user) { %>
+              <h1>Bienvenue sur Admin CinéDélices </h1>
+                <p>
+                Veuillez vous connecter ou vous inscrire.
+                </p>
       </div>
-    </div>
+            <% } %>
+          
+            <% if (locals.user) { %>
+              <h1>Bienvenue sur Admin CinéDélices </h1>
+                <p>
+                Qu'allons nous faire aujourd'hui ?
+                </p>
+      </div>
+            <% } %>
+            
+  </div>
+   
 
 
 <%- include('partials/footer.ejs') %>

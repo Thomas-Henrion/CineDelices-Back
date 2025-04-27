@@ -12,7 +12,7 @@ const adminRouter = express.Router();
 
 
 
-adminRouter.get("/dashboard", (req, res) => {
+adminRouter.get("/", (req, res) => {
 res.render('main')});
 adminRouter.use("/auth",authRouter)
 adminRouter.use("/medias", mediasRouter);
@@ -20,6 +20,6 @@ adminRouter.use("/recipes", recipesRouter);
 adminRouter.use("/users", usersRouter);
 adminRouter.use("/ingredients", ingredientsRouter);
 adminRouter.use("/categories", categoriesRouter);
-adminRouter.use("/auth", authRouter);
+
 
 export default adminRouter;

@@ -26,20 +26,21 @@
           >
             <button class="button-link" type="submit">Voir</button>
           </form>
+
           <form
-            class="form-button"
+            class="form-button edit-form" "
             action="medias/update/<%= media.id %>"
-            method="get"
+            method="post"
           >
-            <button class="button-link" type="submit">Modifier</button>
+            <button class="button-link edit-btn" type="button">Modifier</button>
           </form>
 
           <form
-            class="form-button"
+            class="form-button delete-form"
             action="medias/delete/<%= media.id %>"
             method="post"
           >
-            <button class="button-link" type="submit">Supprimer</button>
+            <button class="button-link delete-btn" type="button">Supprimer</button>
           </form>
         </td>
       </tr>
@@ -47,7 +48,189 @@
     </tbody>
   </table>
 
-  <a class="link-add-data" href="/admin/medias/create">Ajouter un média</a>
+  <a class="link-add-data" href="#" id="openCreateModal">Ajouter un média</a>
 </div>
+
+
+<!-- Modal Création -->
+<div class="modal createModal" id="createModal">
+  <div class="modal-content">
+      <h2>Créer un Média</h2>
+      <form id="form" method="post" action="/admin/medias/create">
+          <div class="form-group">
+              <label for="userName">Nom du média</label>
+              <input type="text" id="userName" name="title" value="" required>
+          </div>
+          <div class="form-group">
+              <label for="email">Anecdote</label>
+              <input type="text" id="email" name="anecdote" value="" required>
+          </div>
+          <div class="form-group">
+              <label for="password">Lien</label>
+              <input type="text" id="email" name="coverImage" value="" required>
+          </div>
+         
+          <div class="modal-buttons">
+              <button type="submit" class="confirm-btn">Sauvegarder</button>
+              <button type="button" class="cancel-btn" id="cancelCreate">Annuler</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+
+
+<!-- Modal Suppression -->
+<div class="modal deleteModal" id="deleteModal">
+  <div class="modal-content">
+      <h2>Suppression média</h2>
+      <p>Êtes-vous certain de vouloir supprimer ce média ?</p>
+      <div class="modal-buttons">
+          <button class="confirm-btn" id="confirmDelete">Oui</button>
+          <button class="cancel-btn" id="cancelDelete">Non</button>
+      </div>
+  </div>
+</div>
+
+
+
+<!-- Modal Modification Média -->
+<div class="modal editModal" id="editModal">
+  <div class="modal-content">
+    <h2>Modifier le rôle de l'utilisateur</h2>
+
+    <form id="editRoleForm" method="post" action="/admin/medias/update/:id">
+      <div class="form-group">
+
+        <label for="userName">Nom du média</label>
+        <input type="text" id="userName" name="title" value="" required>
+
+        <label for="email">Anecdote</label>
+        <input type="text" id="email" name="anecdote" value="" required>
+
+        <label for="lien">Lien</label>
+        <input type="text" id="password" name="coverImage" value="" required>
+      </div>
+
+      <div class="modal-buttons">
+        <button type="submit" class="confirm-btn">Valider</button>
+        <button type="button" class="cancel-btn" id="cancelEdit">Annuler</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+        
+    
+        
+        
+        
+
+
+
+
+<script>
+  // --- Création ---
+  const createModal = document.getElementById('createModal');
+  const openCreate = document.getElementById('openCreateModal');
+  const cancelCreate = document.getElementById('cancelCreate');
+
+  openCreate.addEventListener('click', function (e) {
+      e.preventDefault();
+      createModal.style.display = 'flex';
+  });
+
+  cancelCreate.addEventListener('click', function () {
+      createModal.style.display = 'none';
+  });
+
+
+  // --- Suppression ---
+  const deleteModal = document.getElementById('deleteModal');
+  const confirmDelete = document.getElementById('confirmDelete');
+  const cancelDelete = document.getElementById('cancelDelete');
+  let currentDeleteForm = null;
+
+  // Lier les boutons "Supprimer"
+  document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function () {
+          currentDeleteForm = this.closest('.delete-form');
+          deleteModal.style.display = 'flex';
+      });
+  });
+
+  confirmDelete.addEventListener('click', function () {
+      if (currentDeleteForm) {
+          currentDeleteForm.submit();
+      }
+  });
+
+  cancelDelete.addEventListener('click', function () {
+      deleteModal.style.display = 'none';
+      currentDeleteForm = null;
+  });
+
+
+  // --- Modifier média ---
+const editModal = document.getElementById('editModal');
+const editForm = document.getElementById('editRoleForm');
+const cancelEdit = document.getElementById('cancelEdit');
+
+// Quand on clique sur un bouton "Modifier"
+document.querySelectorAll('.edit-btn').forEach(button => {
+button.addEventListener('click', function () {
+// Récupère l'ID du média depuis l'URL du formulaire
+const mediaId = this.closest('form').action.split('/').pop(); 
+
+// Met à jour l'action du formulaire pour inclure l'ID
+editForm.action = `/admin/medias/update/${mediaId}`;
+
+
+// Affiche la modale
+editModal.style.display = 'flex';
+});
+});
+
+// Annuler = on cache la modale
+cancelEdit.addEventListener('click', function () {
+editModal.style.display = 'none';
+});
+
+// Fermer si clic en dehors de la modale
+window.addEventListener('click', function (e) {
+if (e.target === editModal) {
+editModal.style.display = 'none';
+}
+});
+
+  // Annuler = on cache la modale
+  cancelEdit.addEventListener('click', function () {
+      editModal.style.display = 'none';
+  });
+
+  // Fermer si clic en dehors de la modale
+  window.addEventListener('click', function (e) {
+      if (e.target === editModal) {
+          editModal.style.display = 'none';
+      }
+  });
+
+
+  // Fermer modale si clic à l'extérieur
+  window.addEventListener('click', function (e) {
+      if (e.target === createModal) {
+          createModal.style.display = 'none';
+      }
+      if (e.target === deleteModal) {
+          deleteModal.style.display = 'none';
+          currentDeleteForm = null;
+      }
+  });
+</script>
+
+
+
+
+
 
 <%- include('../partials/footer.ejs') %>

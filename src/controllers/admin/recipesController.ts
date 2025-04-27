@@ -27,26 +27,31 @@ export default {
 
     validateRecipesById: async (req: Request, res: Response): Promise<void> => {
         try {
-            const recipe = await Recipe.findByPk(id,{
-                include : [
-                    {
-                        association : "Compositions",
-                    },
-                    {
-                        association :"Steps"
-                    },
-                    {
-                        association: "Ingredient"
-                    }
-                ]
-            });
-            if (!recipe) {
-                res.status(404).send("Recipe not found");
-                return;
-            }
-            console.log(recipe);
-            
-            res.render("recipes/validateRecipe", { recipe });
+            const validateId = req.params.id;
+
+            const recipe = await Recipe.findByPk(validateId,{
+                include: [
+					{
+						association: "Compositions",
+                        include: [
+                            {
+                                association: "Ingredient",
+                            },
+                        ],
+					},
+					{
+						association: "Steps",
+					},
+					
+				],
+			});
+          console.log(recipe)
+        if (!recipe) {
+            res.status(404).send("Recipe par ID not found");
+            return;
+        }
+        
+        res.render("recipes/validateRecipe", { recipe });
         } catch (error) {
         res.status(500).send("Error fetching recipes");
     }

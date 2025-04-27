@@ -1,16 +1,18 @@
 <%- include('../partials/header.ejs') %>
 
 <div class="main">
-    
-    <img src="<%= media.image %>" alt="Image de <%= media.title %>">
-    <p><%= media.title %></p>
-    <p><%= media.anecdote %></p>
-    
-    <a href="update/<%= media.id%>">modifier</a>
-    <form action="delete/<%= media.id %>" method="post">
-        <button type="submit">Supprimer</button>
-    </form>
-     
+
+
+    <div class="presentation-container">
+
+    <img class="presentation-image" src="/img/cineImg.jpg" alt="Image de <%= media.title %>">
+    <p class="presentation-text"><span>Titre du média:</span> <%= media.title %></p>
+    <p class="presentation-text"> <span>Anecdote du média</span> : <%= media.anecdote %></p>
+ 
+    <a class="presentation-link"href="/admin/medias">Retour</a>
+
+</div>
+   
     
 </div>
     

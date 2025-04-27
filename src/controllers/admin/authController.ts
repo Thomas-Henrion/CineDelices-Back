@@ -55,7 +55,7 @@ export const handleSignUp = async (req: Request, res: Response, next: NextFuncti
         }
 
         if (password !== confirmation) {
-            errors.confirmation = "Les deux mots de passes doivent être identique";
+            errors.confirmation = "Les deux mots de passes doivent être identiques";
         }
 
         if (!errors.email) {
@@ -73,7 +73,7 @@ export const handleSignUp = async (req: Request, res: Response, next: NextFuncti
         const user = await AppUser.create({ username, email, password: hashedPassword });
 
         req.session.userId = user.id;
-        res.redirect("/admin/recipes");
+        res.redirect("/admin");
     } catch (error) {
         next(error);
     }
@@ -103,7 +103,7 @@ export const logout = (req: Request, res: Response, next: NextFunction) => {
     try {
         req.session.destroy(() => {
             res.clearCookie("connect.sid");
-            res.redirect("/");
+            res.redirect("/admin");
         });
     } catch (error) {
         next(error);

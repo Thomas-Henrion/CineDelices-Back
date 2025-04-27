@@ -1,14 +1,16 @@
 import express from 'express';
 import usersController from '../../controllers/admin/usersController';
+import { isAdmin } from '../../middlewares/adminAuthor';
+
 
 const usersRouter = express.Router();
 
-usersRouter.get('/', usersController.getAllUsers);
-usersRouter.get('/create', usersController.createForm);
-usersRouter.post('/create', usersController.createUser);
-usersRouter.get('/update/:id', usersController.updateForm);
-usersRouter.post('/update/:id', usersController.updateUser);
-usersRouter.post('/delete/:id', usersController.deleteUser);
+usersRouter.get('/',isAdmin, usersController.getAllUsers);
+usersRouter.get('/create', isAdmin,usersController.createForm);
+usersRouter.post('/create',isAdmin,usersController.createUser);
+usersRouter.get('/update/:id', isAdmin,usersController.updateForm);
+usersRouter.post('/update/:id',isAdmin, usersController.updateUser);
+usersRouter.post('/delete/:id',isAdmin, usersController.deleteUser);
 
 
 

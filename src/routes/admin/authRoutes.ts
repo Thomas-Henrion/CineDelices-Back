@@ -2,6 +2,7 @@
 import { Router } from "express";
 import * as authController from "../../controllers/admin/authController";
 
+
 const authRouter = Router();
 
 authRouter.get("/register", authController.displaySignUpForm);
