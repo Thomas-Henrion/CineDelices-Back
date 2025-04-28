@@ -1,0 +1,29 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Se connecter</h1>
+
+  <form action="" method="POST">
+    <label class="form-label " for="email">Email</label>
+    <input
+      class="form-control mb-4"
+      type="email"
+      id="email"
+      name="email"
+      placeholder="email@domain.com"
+    />
+
+    <label class="form-label " for="password">Mot de passe</label>
+    <input
+      class="form-control"
+      type="password"
+      id="password"
+      name="password"
+      placeholder="*********"
+    />
+
+    <button class="button-form" type="submit"> Se connecter</button>
+
+  </form>
+</div>
+<%- include('../partials/footer.ejs') %>

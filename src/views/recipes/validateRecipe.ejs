@@ -1,0 +1,33 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <div class="presentation-container">
+
+
+
+
+    <p class="presentation-text"><span>Nom de la recette: </span><%=recipe.name%></p>
+
+    <p class="presentation-text"><span>Description de la recette: </span><%=recipe.description%></p>
+
+    <p class="presentation-text"><span>Ingrédients de la recette:</span></p>
+    <ul>
+      <% recipe.Compositions.forEach(ingredient => { %>
+      <li>
+        <%= ingredient.quantity %> <%= ingredient.unit %> de <%=
+        ingredient.Ingredient.name%>
+      </li>
+      <% }) %>
+    </ul>
+
+    <p class="presentation-text"><span>Etapes de la recette:</span></p>
+    <ul>
+      <% recipe.Steps.forEach(step => { %>
+
+      <li><%= step.description %></li>
+      <% }) %>
+    </ul>
+  </div>
+</div>
+
+<%- include('../partials/footer.ejs') %>

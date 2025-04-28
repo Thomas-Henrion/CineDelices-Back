@@ -7,7 +7,12 @@ import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
-import { limiter } from "./middlewares/rateLimitValidator";
+
+import adminRouter from "./routes/admin/adminRoutes";
+import path from "path";
+import { setupSession, initUserLocals } from "./middlewares/setupSession";
+
+
 
 // Validate the environment configuration
 const { error } = DotenvSchema.validate(process.env, {
@@ -17,6 +22,7 @@ const { error } = DotenvSchema.validate(process.env, {
 if (error) {
 	throw new Error(`Config validation error: ${error.message}`);
 }
+console.log(config.MAIL.APIKEY);
 
 sequelize
 	.authenticate()
@@ -39,12 +45,27 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 
-//Use rateLimit on all route
-app.use(limiter);
-// Use the route for API
+
+// Middleware pour gérer les sessions
+app.use(setupSession);
+app.use(initUserLocals);
+
+// Utiliser les routes pour l'api
 app.use("/api", ApiRouter);
 
-// Use the joi validation for error
+// Middleware pour gérer les fichiers
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set("view engine","ejs");
+app.set('views', path.join(__dirname, 'views'));
+app.use(express.static(path.join(__dirname, "public")));
+
+
+// Utiliser les routes pour l'api admin
+app.use("/admin", adminRouter);
+
+
+// On veux traiter les erreurs de validation Joi
+
 const ContainerTypes = ["body", "query", "headers", "fields", "params"];
 app.use(
 	(

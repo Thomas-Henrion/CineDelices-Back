@@ -1,0 +1,41 @@
+<%- include('../partials/header.ejs') %>
+<div class="main">
+  <h1>Inscription</h1>
+
+  <form action="" method="POST">
+    <!-- le code ci dessus est un ternaire, si la condition est vrai le premier element après le ? s'affiche si c'est faut c'est l'élément après les : -->
+    <label class="form-label" for="username">Username</label>
+    <input class="form-control" type="text" id="username" name="username"
+    placeholder="Nom" value="<%= typeof data !== "undefined" && data.username ?
+    data.username : '' %>">
+
+    <label class="form-label" for="email">Email</label>
+    <input class="form-control" type="email" id="email" name="email"
+    placeholder="email@domain.com" value="<%= typeof data !== "undefined" &&
+    data.email ? data.email : '' %>">
+
+    <label class="form-label" for="password">Mot de passe</label>
+    <input
+      class="form-control"
+      type="password"
+      id="password"
+      name="password"
+      placeholder="*********"
+    />
+
+    <label class="form-label" for="confirmation"
+      >Confirmation mot de passe</label
+    >
+    <input
+      class="form-control"
+      type="password"
+      id="confirmation"
+      name="confirmation"
+      placeholder="*********"
+    />
+
+    <button class="button-form" type="submit"> S'inscrire</button>
+  </form>
+</div>
+
+<%- include('../partials/footer.ejs') %>
