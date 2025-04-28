@@ -25,7 +25,7 @@ authRouter.post(
 	createValidator({ passError: true }).body(ConfirmationSchema),
 	authController.confirmEmail,
 );
-authRouter.get("/refresh", authController.refreshToken);
+authRouter.post("/refresh", authController.refreshToken);
 
 authRouter.get("/private", isAuthenticated, (req, res) => {
 	res.status(200).json({

@@ -15,7 +15,6 @@ export default {
 			offset: string;
 		};
 
-		// Conversion des paramètres de pagination en nombres
 		const numLimit = Number.parseInt(limit, 10);
 		const numOffset = Number.parseInt(offset, 10);
 
@@ -63,9 +62,16 @@ export default {
 		const mediaId = req.params.id;
 		try {
 			const media = await Media.findByPk(mediaId, {
-				include: [{
-					association: "Recipes",
-				}],
+				include: [
+					{
+						association: "Recipes",
+						include: [
+							{
+								association: "Category",
+							},
+						],
+					},
+				],
 			});
 			if (!media) {
 				res.status(404).json({ error: "Media not found" });

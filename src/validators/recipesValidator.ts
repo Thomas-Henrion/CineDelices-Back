@@ -2,7 +2,6 @@ import Joi from "joi";
 
 const CreateRecipeSchema = Joi.object({
 	name: Joi.string().min(3).max(100).required(),
-	coverImg: Joi.string().uri().required(),
 	description: Joi.string().min(10).max(5000).required(),
 	authorId: Joi.number().integer().positive().required(),
 	mediaId: Joi.number().integer().positive().required(),
@@ -30,6 +29,7 @@ const getRecipesQuerySchema = Joi.object({
 	ingredientsIds: Joi.string().pattern(/^\d+(,\d+)*$/),
 	limit: Joi.number().positive().min(1).max(100).optional(),
 	offset: Joi.number().integer().min(0).optional(),
+	random: Joi.boolean().optional(),
 });
 
 export { CreateRecipeSchema, getRecipesQuerySchema };

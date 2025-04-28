@@ -1,15 +1,16 @@
 import type { Request, Response } from "express";
 import type { FindOptions } from "sequelize";
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import {
-	Media,
-	Recipe,
-	RecipeCategory,
-	RecipeComposition,
-	RecipeStep,
+    Media,
+    Recipe,
+    RecipeCategory,
+    RecipeComposition,
+    RecipeStep,
 } from "../database/association";
 
 export default {
+
 	getRecipeById: async (req: Request, res: Response): Promise<void> => {
 		const { id } = req.params;
 		try {
@@ -254,4 +255,5 @@ export default {
 		const recipes = await Recipe.findAll(queryOptions);
 		res.status(200).json(recipes);
 	},
+
 };

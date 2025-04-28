@@ -8,34 +8,48 @@ import { mailerSend, sentFrom } from "../utils/mail";
 
 export default {
 	login: async (req: Request, res: Response) => {
-		// Récupère les informations de l'utilisateur depuis la requête
+		// Retrieve user information from the request
 		const { email, password } = req.body as {
 			email: string;
 			password: string;
 		};
 
-		// Récupère l'utilisateur depuis la base de données
-		const user = await User.findOne({ where: { email } });
+		// Retrieve the user from the database
+		const user = await User.findOne({
+			where: { email },
+			attributes: {
+				include: ["password", "verificationCode"],
+			},
+		});
 
-		// Vérifie si l'utilisateur existe
+		// Check if the user exists
 		if (!user) {
 			res.status(401).json({ message: "Invalid credentials" });
 			return;
 		}
 
-		// Vérifie si le mot de passe est correct
+		// Check if the password is correct
 		const passwordValid = await argon2.verify(user.password, password);
 
-		// Vérifie si le mot de passe est correct
+		// Check if the password is correct
 		if (!passwordValid) {
 			res.status(401).json({ message: "Invalid credentials" });
 			return;
 		}
 
-		// Génère un token JWT et un refresh token
-		const token = jsonwebtoken.sign({ id: user.id }, dotenv.JWT.SECRET, {
-			expiresIn: "10m",
-		});
+		// Generate a JWT token and a refresh token
+		const token = jsonwebtoken.sign(
+			{
+				id: user.id,
+				email: user.email,
+				username: user.username,
+				isConfirmed: user.verificationCode == null,
+			},
+			dotenv.JWT.SECRET,
+			{
+				expiresIn: "10m",
+			},
+		);
 		const refreshToken = jsonwebtoken.sign(
 			{ id: user.id },
 			dotenv.JWT.REFRESH_SECRET,
@@ -44,36 +58,36 @@ export default {
 			},
 		);
 
-		// Retourne le token et le refresh token
+		// Return the token and the refresh token
 		res.status(200).json({
 			token,
 			refreshToken,
 		});
 	},
 	register: async (req: Request, res: Response) => {
-		// Récupère les informations de l'utilisateur depuis la requête
+		// Retrieve user information from the request
 		const { email, password, username } = req.body as {
 			email: string;
 			password: string;
 			username: string;
 		};
 
-		// Vérifie si l'utilisateur existe déjà
+		// Check if the user already exists
 		const user = await User.findOne({ where: { email } });
 		if (user) {
 			res.status(400).json({ message: "User already exists" });
 			return;
 		}
 
-		// On hashe le mot de passe
+		// Hash the password
 		const hashedPassword = await argon2.hash(password);
 
-		// Création d'un code de vérification aléatoire entre 1000 et 9999
+		// Create a random verification code between 1000 and 9999
 		const randomVerificationCode = Math.floor(
 			Math.random() * (9999 - 1000 + 1) + 1000,
 		);
 
-		// Création de l'utilisateur dans la base de données
+		// Create the user in the database
 		const newUser = await User.create({
 			username,
 			email,
@@ -81,10 +95,19 @@ export default {
 			verificationCode: randomVerificationCode,
 		});
 
-		// Création du token JWT et du refresh token
-		const token = jsonwebtoken.sign({ id: newUser.id }, dotenv.JWT.SECRET, {
-			expiresIn: "10m",
-		});
+		// Create the JWT token and the refresh token
+		const token = jsonwebtoken.sign(
+			{
+				id: newUser.id,
+				email: newUser.email,
+				username: newUser.username,
+				isConfirmed: newUser.verificationCode == null,
+			},
+			dotenv.JWT.SECRET,
+			{
+				expiresIn: "10m",
+			},
+		);
 
 		const refreshToken = jsonwebtoken.sign(
 			{ id: newUser.id },
@@ -94,7 +117,7 @@ export default {
 			},
 		);
 
-		// Envoi de l'email de vérification
+		// Send the verification email
 		const recipients = [new Recipient(email, username)];
 
 		const emailParams = new EmailParams()
@@ -114,7 +137,7 @@ export default {
 			return;
 		});
 
-		// Retourne le token et le refresh token
+		// Return the token and the refresh token
 		res.status(201).json({
 			message: "User created successfully",
 			user: {
@@ -127,20 +150,25 @@ export default {
 		});
 	},
 	confirmEmail: async (req: Request, res: Response) => {
-		// Récupère les informations de l'utilisateur depuis la requête
+		// Retrieve user information from the request
 		const { email, code } = req.body as {
 			email: string;
 			code: number;
 		};
 
-		// Vérifie si l'utilisateur existe déjà
-		const user = await User.findOne({ where: { email } });
+		// Check if the user already exists
+		const user = await User.findOne({
+			where: { email },
+			attributes: {
+				include: ["verificationCode"],
+			},
+		});
 		if (!user) {
 			res.status(400).json({ message: "Credentials not found" });
 			return;
 		}
 
-		// Vérifie si le code de vérification est correct
+		// Check if the verification code is correct
 		if (user.verificationCode !== code) {
 			res.status(400).json({ message: "Invalid verification code" });
 			return;
@@ -149,7 +177,7 @@ export default {
 		user.verificationCode = null;
 		await user.save();
 
-		// Envoi de l'email de confirmation
+		// Send the confirmation email
 		const recipients = [new Recipient(user.email, user.username)];
 
 		const emailParams = new EmailParams()
@@ -171,16 +199,16 @@ export default {
 		res.status(200).json({ message: "Email verified successfully" });
 	},
 	refreshToken: async (req: Request, res: Response) => {
-		// Récupère le refresh token depuis la requête
+		// Retrieve the refresh token from the request
 		const { refreshToken } = req.body as { refreshToken: string };
 
-		// Vérifie si le refresh token est présent
+		// Check if the refresh token is present
 		if (!refreshToken) {
 			res.status(401).json({ message: "Unauthorized" });
 			return;
 		}
 
-		// Vérifie si le refresh token est valide
+		// Check if the refresh token is valid
 		jsonwebtoken.verify(
 			refreshToken,
 			dotenv.JWT.REFRESH_SECRET,
@@ -199,7 +227,12 @@ export default {
 				}
 
 				const token = jsonwebtoken.sign(
-					{ id: user.id },
+					{
+						id: user.id,
+						email: user.email,
+						username: user.username,
+						isConfirmed: user.verificationCode == null,
+					},
 					dotenv.JWT.SECRET,
 					{
 						expiresIn: "10m",

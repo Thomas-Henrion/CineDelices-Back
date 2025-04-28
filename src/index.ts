@@ -7,12 +7,14 @@ import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
+
 import adminRouter from "./routes/admin/adminRoutes";
 import path from "path";
 import { setupSession, initUserLocals } from "./middlewares/setupSession";
 
 
-// Validation de la configuration de l'environnement
+
+// Validate the environment configuration
 const { error } = DotenvSchema.validate(process.env, {
 	abortEarly: false,
 	allowUnknown: true,
@@ -43,6 +45,7 @@ app.use(
 app.use(express.json());
 app.use(bodyParser.json());
 
+
 // Middleware pour gérer les sessions
 app.use(setupSession);
 app.use(initUserLocals);
@@ -62,6 +65,7 @@ app.use("/admin", adminRouter);
 
 
 // On veux traiter les erreurs de validation Joi
+
 const ContainerTypes = ["body", "query", "headers", "fields", "params"];
 app.use(
 	(

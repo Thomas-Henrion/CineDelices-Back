@@ -63,6 +63,11 @@ Recipe.init(
 	},
 	{
 		sequelize,
+		defaultScope: {
+			where: {
+				actif: true,
+			},
+		},
 	},
 );
 
