@@ -35,6 +35,13 @@ sequelize
 				email: "john@doe.fr",
 				password: await argon2.hash("johnEstVraimentUnSuperPseudo"),
 			},
+			{
+				id: 2,
+				username: "admin",
+				email: "admin@admin.fr",
+				password: await argon2.hash("administrateur0000"),
+				role: "admin",
+			},
 		];
 	
 		for (const user of users) {
