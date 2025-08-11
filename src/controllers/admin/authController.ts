@@ -21,7 +21,9 @@ export const displaySignUpForm = async (req: Request, res: Response, next: NextF
     }
 };
 
+
 export const handleSignUp = async (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.body)
     try {
         const { username, email, password, confirmation } = req.body;
 
@@ -91,6 +93,9 @@ export const handleLogin = async (req: Request, res: Response, next: NextFunctio
         if (!user || !await argon2.verify(user.password, password)) {
             return res.status(401).render("auth/login", { error: "Couple email/mot de passe incorrect" });
         }
+            console.log("User found:", user);
+            console.log("Password match:", await argon2.verify(user.password, password));
+            console.log("email:", email);
 
         req.session.userId = user.id;
         res.redirect("/admin/recipes");
