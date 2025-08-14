@@ -8,6 +8,8 @@ import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
 import { limiter } from "./middlewares/rateLimitValidator";
+import helmet from "helmet";
+
 
 // Validate the environment configuration
 const { error } = DotenvSchema.validate(process.env, {
@@ -29,6 +31,9 @@ sequelize
 	});
 
 const app = express();
+
+app.use(helmet());
+
 
 app.use(
 	cors({

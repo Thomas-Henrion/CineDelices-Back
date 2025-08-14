@@ -1,4 +1,5 @@
 import Joi from "joi";
+import { sanitizeTextSchema } from "../utils/sanitizeText";
 
 const LoginSchema = Joi.object({
 	email: Joi.string().email().required().messages({
@@ -14,7 +15,7 @@ const LoginSchema = Joi.object({
 });
 
 const RegisterSchema = Joi.object({
-	username: Joi.string().min(3).max(30).required().messages({
+	username: sanitizeTextSchema.min(3).max(30).required().messages({
 		"string.empty": "UsernameName is required",
 		"string.min": "UsernameName must be at least 3 characters long",
 		"string.max": "UsernameName must be at most 30 characters long",

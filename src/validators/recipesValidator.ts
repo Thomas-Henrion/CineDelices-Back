@@ -1,8 +1,9 @@
 import Joi from "joi";
+import { sanitizeTextSchema } from "../utils/sanitizeText";
 
 const CreateRecipeSchema = Joi.object({
-	name: Joi.string().min(3).max(100).required(),
-	description: Joi.string().min(10).max(5000).required(),
+	name: sanitizeTextSchema.min(3).max(100).required(),
+	description: sanitizeTextSchema.min(10).max(5000).required(),
 	authorId: Joi.number().integer().positive().required(),
 	mediaId: Joi.number().integer().positive().required(),
 	categoryId: Joi.number().integer().positive().required(),
@@ -18,7 +19,7 @@ const CreateRecipeSchema = Joi.object({
 	steps: Joi.array()
 		.items(
 			Joi.object({
-				description: Joi.string().min(5).max(500).required(),
+				description: sanitizeTextSchema.min(5).max(500).required(),
 			}),
 		)
 		.required(),
