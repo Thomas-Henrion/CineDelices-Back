@@ -85,24 +85,29 @@ export const displayLoginForm = (req: Request, res: Response, next: NextFunction
     res.render("auth/login");
 };
 
-export const handleLogin = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { email, password } = req.body;
-        const user = await AppUser.findOne({ where: { email } });
+export const handleLogin = async ( req: Request, res: Response) =>  {
+        const {email, password} = req.body as 
+        {email: string; password: string;};
 
-        if (!user || !await argon2.verify(user.password, password)) {
+        const user = await AppUser.findOne({
+            where: { email },
+            attributes: ['id', 'email', 'password','role','username']
+        });
+        
+
+        if (!user ) {
             return res.status(401).render("auth/login", { error: "Couple email/mot de passe incorrect" });
         }
-            console.log("User found:", user);
-            console.log("Password match:", await argon2.verify(user.password, password));
-            console.log("email:", email);
+
+        const passwordValid = await argon2.verify(user.password, password);
+
+        if (!passwordValid) {
+            return res.status(401).render("auth/login", { error: "Couple email/mot de passe incorrect" });
+        }
 
         req.session.userId = user.id;
         res.redirect("/admin/recipes");
-    } catch (error) {
-        next(error);
-    }
-};
+}
 
 export const logout = (req: Request, res: Response, next: NextFunction) => {
     try {
