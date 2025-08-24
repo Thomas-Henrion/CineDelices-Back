@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from 'express';
 
 
 export const setupSession = session({
-    //  paramétré notre session
+    //  paramétrer notre session
     secret: process.env.SECRET_KEY as string,
     resave: false,
     saveUninitialized: false,
