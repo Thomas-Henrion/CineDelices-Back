@@ -19,10 +19,12 @@ User.hasMany(Recipe, {
 // A Recipe belongs to a Media (e.g., image) and a Media can be associated with many Recipes
 Recipe.belongsTo(Media, {
 	foreignKey: "mediaId",
+	onDelete: "CASCADE",
 	as: "Media",
 });
 Media.hasMany(Recipe, {
 	foreignKey: "mediaId",
+	onDelete: "CASCADE",
 	as: "Recipes",
 });
 
