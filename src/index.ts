@@ -7,10 +7,14 @@ import bodyParser from "body-parser";
 import type { ExpressJoiError } from "express-joi-validation";
 import DotenvSchema from "./validators/dotenvValidator";
 import cors from "cors";
+import { limiter } from "./middlewares/rateLimitValidator";
+import helmet from "helmet";
+
 
 import adminRouter from "./routes/admin/adminRoutes";
 import path from "path";
 import { setupSession, initUserLocals } from "./middlewares/setupSession";
+
 
 
 
@@ -35,6 +39,9 @@ sequelize
 	});
 
 const app = express();
+
+app.use(helmet());
+
 
 app.use(
 	cors({
