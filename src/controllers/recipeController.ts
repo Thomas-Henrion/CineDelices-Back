@@ -11,33 +11,41 @@ import {
 
 export default {
 
-	getRecipeById: async (req: Request, res: Response): Promise<void> => {
-		const { id } = req.params;
-		try {
-			const recipe = await Recipe.findByPk(id, {
-				include: [
-					{
-						association: "Compositions",
-					},
-					{
-						association: "Steps",
-					},
-					{
-						association: "Media",
-					},
-				],
-			});
+	  getRecipeById: async (req: Request, res: Response): Promise<void> => {
+        const { id } = req.params;
+        try {
+            const recipe = await Recipe.findByPk(id, {
+                include: [
+                    {
+                        association: "Compositions",
+                        include: [
+                            {
+                                association: "Ingredient",
+                            },
+                        ],
+                    },
+                    {
+                        association: "Steps",
+                    },
+                    {
+                        association: "Media",
+                    },
+                    {
+                        association: "Author"
+                    }
+                ],
+            });
 
-			if (!recipe) {
-				res.status(404).json({ message: "Recipe not found" });
-				return;
-			}
+            if (!recipe) {
+                res.status(404).json({ message: "Recipe not found" });
+                return;
+            }
 
-			res.status(200).json(recipe);
-		} catch (error) {
-			res.status(500).json({ message: "Error fetching recipe", error });
-		}
-	},
+            res.status(200).json(recipe);
+        } catch (error) {
+            res.status(500).json({ message: "Error fetching recipe", error });
+        }
+    },
 	createRecipe: async (req: Request, res: Response): Promise<void> => {
 		const {
 			name,
