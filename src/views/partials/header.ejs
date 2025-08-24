@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Back Office CinéDélices</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header class="sidebar">
+        
+        <div class="link_container">
+
+        <% if (!locals.user ) { %>
+          <h2>Admin</h2>
+            <a href="/admin/auth/register">S'enregistrer</a>
+            <a href="/admin/auth/login">Se connecter</a>
+          </div>
+        <% } %>
+
+        <% if (locals.user) { %>
+         <h2><%= locals.user.username %></h2>
+         
+         <a href="/admin/users">Utilisateurs</a>
+         <a href="/admin/recipes">Recettes</a>
+         <a href="/admin/ingredients">Ingredients</a>
+         <a href="/admin/medias">Médias</a>
+         <a href="/admin/categories">Catégories</a>
+          <a href="/admin/auth/logout">Se déconnecter</a>
+        </div>
+        <% } %>
+
+      
+              
+        
+           
+          
+
+
+
+
+         
+        </header>

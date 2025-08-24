@@ -27,23 +27,30 @@ sequelize
 		console.error("Unable to connect to the database:", error);
 	});
 
-const CreateUsers = async () => {
-	const users = [
-		{
-			id: 1,
-			username: "john_doe",
-			email: "john@doe.fr",
-			password: await argon2.hash("johnEstVraimentUnSuperPseudo"),
-		},
-	];
-
-	for (const user of users) {
-		const [newUser, created] = await User.findOrCreate({
-			where: { id: user.id },
-			defaults: user,
-		});
-	}
-};
+	const CreateUsers = async () => {
+		const users = [
+			{
+				id: 1,
+				username: "john_doe",
+				email: "john@doe.fr",
+				password: await argon2.hash("johnEstVraimentUnSuperPseudo"),
+			},
+			{
+				id: 2,
+				username: "admin",
+				email: "admin@admin.fr",
+				password: await argon2.hash("administrateur0000"),
+				role: "admin",
+			},
+		];
+	
+		for (const user of users) {
+			const [newUser, created] = await User.findOrCreate({
+				where: { id: user.id },
+				defaults: user,
+			});
+		}
+	};
 
 const CreateIngredients = async () => {
 	const ingredients = [

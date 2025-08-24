@@ -1,0 +1,108 @@
+<%- include('../partials/header.ejs') %>
+
+<div class="main">
+  <h1>Catégories</h1>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th class="column-title">Nom</th>
+        <th class="column-title"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.forEach(categorie => { %>
+      <tr class="row-table-header">
+        <td class="row-table"><%= categorie.name%></td>
+       
+        <td class="row-table-link">
+       
+          <form
+            class="form-button delete-form"
+            action="categories/delete/<%= categorie.id %>"
+            method="post"
+          >
+            <button class="button-link delete-btn" type="button">Supprimer</button>
+          </form>
+        </td>
+      </tr>
+      <% }) %>
+    </tbody>
+  </table>
+
+  <a class="link-add-data" href="#" id="openCreateModal">Créer une catégorie</a>
+</div>
+
+<!-- Modal Création -->
+<div class="modal createModal" id="createModal">
+  <div class="modal-content">
+      <h2>Créer une Catégorie</h2>
+      <form id="form" method="post" action="/admin/categories/create">
+          <div class="form-group">
+              <label for="name">Nom de la catégorie</label>
+              <input type="text" id="name" name="name" value="" required>
+          </div>
+          <div class="modal-buttons">
+              <button type="submit" class="confirm-btn">Sauvegarder</button>
+              <button type="button" class="cancel-btn" id="cancelCreate">Annuler</button>
+          </div>
+      </form>
+  </div>
+</div>
+
+<!-- Modal Suppression -->
+<div class="modal deleteModal" id="deleteModal">
+  <div class="modal-content">
+      <h2>Suppression catégorie</h2>
+      <p>Êtes-vous certain de vouloir supprimer cette catégorie ?</p>
+      <div class="modal-buttons">
+          <button class="confirm-btn" id="confirmDelete">Oui</button>
+          <button class="cancel-btn" id="cancelDelete">Non</button>
+      </div>
+  </div>
+</div>
+
+
+
+<script>
+  // --- Création ---
+  const createModal = document.getElementById('createModal');
+  const openCreate = document.getElementById('openCreateModal');
+  const cancelCreate = document.getElementById('cancelCreate');
+
+  openCreate.addEventListener('click', function (e) {
+      e.preventDefault();
+      createModal.style.display = 'flex';
+  });
+
+  cancelCreate.addEventListener('click', function () {
+      createModal.style.display = 'none';
+  });
+
+
+  // --- Suppression ---
+  const deleteModal = document.getElementById('deleteModal');
+  const confirmDelete = document.getElementById('confirmDelete');
+  const cancelDelete = document.getElementById('cancelDelete');
+  let currentDeleteForm = null;
+
+  // Lier les boutons "Supprimer"
+  document.querySelectorAll('.delete-btn').forEach(button => {
+      button.addEventListener('click', function () {
+          currentDeleteForm = this.closest('.delete-form');
+          deleteModal.style.display = 'flex';
+      });
+  });
+
+  confirmDelete.addEventListener('click', function () {
+      if (currentDeleteForm) {
+          currentDeleteForm.submit();
+      }
+  });
+
+  cancelDelete.addEventListener('click', function () {
+      deleteModal.style.display = 'none';
+      currentDeleteForm = null;
+  });
+</script>
+<%- include('../partials/footer.ejs') %>
